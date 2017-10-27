@@ -20,3 +20,6 @@ h2 span {
 	position:absolute;
 	top: 25%;
 }
+.erro{
+	display: none;
+}

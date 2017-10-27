@@ -3,18 +3,25 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Perfil político </title>
-		
+
+		<link rel="stylesheet" type="text/css" href="static/css/dc.css">
+		<link rel="stylesheet" type="text/css" href="static/css/style.css">
+
+		<script type="text/javascript" src="static/js/jQuery.js"></script>
+		<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 		<script src="static/js/crossfilter.js"></script>
 		<script src="static/js/dc.js"></script>
 		<script src="static/js/main.js"></script>
 
 
-		<link rel="static/css/dc.css"/>
-		<link rel="static/css/style.css"/>
-
-
 	</head>
 	<body onload="loadEstado();">
-		
+		<div id="erro_estado" class ="erro">
+			<h1>Erro</h1><br/>
+			<b>Estado não encontrado</b>
+		</div>
+		<div id="content" >
+			<div id="test"></div>
+		</div>
 	</body>
 </html>
