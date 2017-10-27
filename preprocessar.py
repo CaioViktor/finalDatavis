@@ -16,14 +16,31 @@ estados = ['CE']
 
 dadosGerais = {}
 # text = sc.textFile("file:///home/caio/datavis/datavis/recorte/votos/*.txt,file:///home/caio/datavis/datavis/recorte/candidatos/*.txt,file:///home/caio/datavis/datavis/recorte/cassacao/*.txt").map(lambda linha: linha.split(";"))
-
-nameFileGeral = "/home/caio/datavis/datavis/processados/geral.json"
-def processar(estado):
-	nameFile = "/home/caio/datavis/datavis/processados/"+estado
+raiz = "/home/caio/datavis/datavis/"
+nameFileGeral = raiz+"/processados/geral.json"
+def gerarTemp(estado):
 	ano = '2014'
 	ano2 = '2016'
+	temp = open(raiz+"temp.txt","w")
+	temp.write("")
+	temp.close()
+	files = [raiz+"consulta_cand_"+ano+"/consulta_cand_"+ano+"_"+estado+".txt",raiz+"votacao_candidato_munzona_"+ano+"/votacao_candidato_munzona_"+ano+"_"+estado+".txt",raiz+"motivo_cassacao_"+ano2+"/motivo_cassacao_"+ano2+"_"+estado+".txt",raiz+"consulta_cand_"+ano2+"/consulta_cand_"+ano2+"_"+estado+".txt",raiz+"votacao_candidato_munzona_"+ano2+"/votacao_candidato_munzona_"+ano2+"_"+estado+".txt",raiz+"motivo_cassacao_"+ano2+"/motivo_cassacao_"+ano2+"_"+estado+".txt"]
+	for path in files:
+		file = open(path,"rb")
+		temp = open(raiz+"temp.txt","a")
+		for line in file:
+			temp.write(line.decode('latin1'))
+		temp.close()
+		file.close()
+
+
+
+def processar(estado):
+	nameFile = raiz+"/processados/"+estado
+	print("Gerando arquivo temporário\n")
+	gerarTemp(estado)
 	print("-------------------------------------------------------\nProcessando o estado "+estado+" \n")
-	text = sc.textFile("file:///home/caio/datavis/datavis/consulta_cand_"+ano+"/consulta_cand_"+ano+"_"+estado+".txt,file:///home/caio/datavis/datavis/votacao_candidato_munzona_"+ano+"/votacao_candidato_munzona_"+ano+"_"+estado+".txt,file:///home/caio/datavis/datavis/motivo_cassacao_"+ano2+"/motivo_cassacao_"+ano2+"_"+estado+".txt,file:///home/caio/datavis/datavis/consulta_cand_"+ano2+"/consulta_cand_"+ano2+"_"+estado+".txt,file:///home/caio/datavis/datavis/votacao_candidato_munzona_"+ano2+"/votacao_candidato_munzona_"+ano2+"_"+estado+".txt,file:///home/caio/datavis/datavis/motivo_cassacao_"+ano2+"/motivo_cassacao_"+ano2+"_"+estado+".txt",use_unicode=True).map(lambda linha: linha.split(";"))
+	text = sc.textFile("file://"+raiz+"temp.txt").map(lambda linha: linha.split(";"))
 
 	projecaoVotos = text.filter(lambda fato: len(fato) == 30).map(lambda cd: (str(cd[2]).strip('"')+"_"+str(cd[3]).strip('"')+"_"+str(cd[12]).strip('"'),int(str(cd[28]).strip('"')))).reduceByKey(lambda v1,v2: v1+v2).map(lambda cd:(cd[0],('a',cd[1])))
 	projecaoCandidatos = text.filter(lambda fato: len(fato) == 46).map(lambda cd: (str(cd[2]).strip('"')+"_"+str(cd[3]).strip('"')+"_"+str(cd[11]).strip('"'),(str(cd[2]).strip('"'),str(cd[3]).strip('"'),str(cd[5]).strip('"'),str(cd[7]).strip('"'),str(cd[9]).strip('"'),str(cd[10]).strip('"'),str(cd[11]).strip('"'),str(cd[13]).strip('"'),str(cd[14]).strip('"'),str(cd[18]).strip('"'),str(cd[22]).strip('"'),str(cd[25]).strip('"'),str(cd[26]).strip('"'),str(cd[28]).strip('"'),str(cd[30]).strip('"'),str(cd[32]).strip('"'),str(cd[34]).strip('"'),str(cd[36]).strip('"'),str(cd[38]).strip('"'),str(cd[39]).strip('"'),str(cd[41]).strip('"'),str(cd[44]).strip('"'),str(cd[45]).strip('"'))))
@@ -39,7 +56,8 @@ def processar(estado):
 	df = sqlContext.createDataFrame(juncaoCandidatosVotosCassacao, header)
 	# Write CSV (I have HDFS storage)
 	df.coalesce(1).write.format('com.databricks.spark.csv').options(header='true').save('file://'+nameFile)
-	estado = 'CE'
+	
+
 	resumo = {'estado':estado}
 	turno1 = {}
 	turno2 = {}
@@ -83,8 +101,8 @@ def processar(estado):
 	turno1['candidatos_por_situacao'] = totalT1.map(lambda d:(d[21],1)).reduceByKey(lambda a,b:a+b).collect()
 	turno2['candidatos_por_situacao'] = totalT2.map(lambda d:(d[21],1)).reduceByKey(lambda a,b:a+b).collect()
 
-	turno1['eleitos_por_partido'] = totalT1.filter(lambda d: d[21] == 'ELEITO POR M�DIA' or d[21] == 'ELEITO POR QP' or d[21] == 'ELEITO').map(lambda t: (t[9],1)).reduceByKey(lambda a,b:a+b).collect()
-	turno2['eleitos_por_partido'] = totalT2.filter(lambda d: d[21] == 'ELEITO POR M�DIA' or d[21] == 'ELEITO POR QP' or d[21] == 'ELEITO').map(lambda t: (t[9],1)).reduceByKey(lambda a,b:a+b).collect()
+	turno1['eleitos_por_partido'] = totalT1.filter(lambda d: d[21] == 'ELEITO POR MÉDIA' or d[21] == 'ELEITO POR QP' or d[21] == 'ELEITO').map(lambda t: (t[9],1)).reduceByKey(lambda a,b:a+b).collect()
+	turno2['eleitos_por_partido'] = totalT2.filter(lambda d: d[21] == 'ELEITO POR MÉDIA' or d[21] == 'ELEITO POR QP' or d[21] == 'ELEITO').map(lambda t: (t[9],1)).reduceByKey(lambda a,b:a+b).collect()
 
 	turno1['candidatos'] = totalT1.map(lambda t: (t[9],1)).reduceByKey(lambda a,b:a+b).collect()
 	turno2['candidatos'] = totalT2.map(lambda t: (t[9],1)).reduceByKey(lambda a,b:a+b).collect()
@@ -103,8 +121,8 @@ def processar(estado):
 	turno1['idade_media'] = totalT1.map(lambda d: int(d[13])).mean()
 	turno2['idade_media'] = totalT2.map(lambda d: int(d[13])).mean()
 
-	turno1['idade_media_eleito'] = totalT1.filter(lambda d: d[21] == 'ELEITO POR M�DIA' or d[21] == 'ELEITO POR QP' or d[21] == 'ELEITO').map(lambda d: int(d[13])).mean()
-	turno2['idade_media_eleito'] = totalT2.filter(lambda d: d[21] == 'ELEITO POR M�DIA' or d[21] == 'ELEITO POR QP' or d[21] == 'ELEITO').map(lambda d: int(d[13])).mean()
+	turno1['idade_media_eleito'] = totalT1.filter(lambda d: d[21] == 'ELEITO POR MÉDIA' or d[21] == 'ELEITO POR QP' or d[21] == 'ELEITO').map(lambda d: int(d[13])).mean()
+	turno2['idade_media_eleito'] = totalT2.filter(lambda d: d[21] == 'ELEITO POR MÉDIA' or d[21] == 'ELEITO POR QP' or d[21] == 'ELEITO').map(lambda d: int(d[13])).mean()
 
 
 
