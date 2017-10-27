@@ -11,8 +11,8 @@ conf = (SparkConf()
          .setAppName("My app")
          .set("spark.executor.memory", "1g"))
 sc = SparkContext(conf = conf)
-# estados = ['AC','AL','AM','AP','BA','BR','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO']
-estados = ['CE']
+estados = ['AC','AL','AM','AP','BA','CE','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO']
+# estados = ['CE']
 
 dadosGerais = {}
 # text = sc.textFile("file:///home/caio/datavis/datavis/recorte/votos/*.txt,file:///home/caio/datavis/datavis/recorte/candidatos/*.txt,file:///home/caio/datavis/datavis/recorte/cassacao/*.txt").map(lambda linha: linha.split(";"))
@@ -37,7 +37,7 @@ def gerarTemp(estado):
 
 def processar(estado):
 	nameFile = raiz+"/processados/"+estado
-	print("Gerando arquivo temporário\n")
+	print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nGerando arquivo temporário para o estado:"+estado+"\n")
 	gerarTemp(estado)
 	print("-------------------------------------------------------\nProcessando o estado "+estado+" \n")
 	text = sc.textFile("file://"+raiz+"temp.txt").map(lambda linha: linha.split(";"))
@@ -130,12 +130,15 @@ def processar(estado):
 
 	resumo['turno1'] = turno1
 	resumo['turno2'] = turno2
-	dadosGerais['CE'] = resumo
+	dadosGerais[estado] = resumo
 
 
 if __name__ == "__main__":
 	for estado in estados:
-		processar(estado)
+		try:
+			processar(estado)
+		except Exception as e:
+			print("Estado: "+estado+"\n"+str(e))
 	print("\nEscrevendo dados gerais\n")
 	geral = open(nameFileGeral,"w")
 	geral.write(str(dadosGerais))
