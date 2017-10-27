@@ -5,34 +5,52 @@ var pathGeral = pathData+"geral.json"
 function pathEstado(estado){
 	return pathData+estado+"/data.csv"
 }
-
+function closeLoad(){
+	$("#load")[0].style.display="none";
+}
 function loadGeral(){
 	d3.json(pathGeral,function(data){
 		
 		
 		//Tratamento dos dados
-		for(var estado in data){
-			console.log(data[estado]);
-		}
+		// for(var estado in data){
+		// 	// console.log(data[estado]);
+		// }
 
 		//Definição de Gráficos e crossfilter
 
-
+		var bar = dc.barChart("#candidatos");
+		bar.ordering(function(d){ return -d.value});
 		var facts = crossfilter(data);
 		
 		//Código
-		
+		var candidatosDim = facts.dimension(function(d){
+			return d.estado;
+		});
+		var candidatosGroup = candidatosDim.group().reduceSum(function(d){
+			return d.turno1.quantidade;
+		});
 
 
 		//Condiguração gráficos
 		
-
+		bar.width(600)
+			.height(600)
+			.margins({top: 50, right: 50, bottom: 25, left: 40})
+			.dimension(candidatosDim)
+			.group(candidatosGroup)
+			.x(d3.scale.ordinal())
+            .xUnits(dc.units.ordinal)
+            .xAxisLabel("Estado")
+            .yAxisLabel("Total de candidatos");
 
 
 
 		//Render
 		dc.renderAll();
+		closeLoad();
 	});
+
 }
 
 function loadEstado(){
@@ -81,7 +99,7 @@ function loadEstado(){
 
 			//Render
 			dc.renderAll();
-
+			closeLoad();
 		});
 	}
 }

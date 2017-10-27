@@ -1,6 +1,6 @@
 body {
     font-family: "helvetica";
-    padding-top: 50px;
+    
 }
 
 h4 span {
@@ -16,10 +16,28 @@ h2 span {
     font-size:14px;
     font-weight:normal;
 }
-.bar{
-	position:absolute;
-	top: 25%;
-}
 .erro{
 	display: none;
+}
+#load{
+	position:absolute;
+	top:0px;
+	left:0px;
+	min-width:100%;
+	min-height:100%;
+	filter:alpha(opacity=80);
+	background-color: #000000;
+    opacity: 0.8;
+    -moz-opacity:0.8;
+    -webkit-opacity:0.8;
+    z-index: 9000;
+    text-align: center;
+    justify-content: center;
+    pointer-events:none
+}
+#load img{
+	position:absolute;
+	top:50%;
+	width: 36px;
+	height:36px;
 }

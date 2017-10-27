@@ -1,8 +1,9 @@
 # finalDatavis
+<a href="https://caioviktor.github.io/finalDatavis/"> GitPages</a>
 <h2>Estrutura de Dados Gerais</h2><br/>
 <pre>
-	{
-		'*Sigla do estado*':{
+	[
+		{
 			'estado': '*Sigla do estado*',
 			'turno1':{
 				'quantidade': *quantidade de candidatos*,
@@ -24,7 +25,7 @@
 			}
 		}
 		,...
-	}
+	]
 </pre>
 <hr/>
 <h2>Estrutura de Dados Estado</h2><br/>
