@@ -1,0 +1,22 @@
+body {
+    font-family: "helvetica";
+    padding-top: 50px;
+}
+
+h4 span {
+    font-size:14px;
+    font-weight:normal;
+}
+  
+h2 {
+    float: right;
+  }
+  
+h2 span {
+    font-size:14px;
+    font-weight:normal;
+}
+.bar{
+	position:absolute;
+	top: 25%;
+}
