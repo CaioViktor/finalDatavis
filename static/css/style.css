@@ -41,3 +41,8 @@ h2 span {
 	width: 36px;
 	height:36px;
 }
+#mapa{
+	width: 640px; 
+	height: 350px; 
+	margin:auto;
+}

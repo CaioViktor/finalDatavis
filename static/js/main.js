@@ -5,9 +5,21 @@ var pathGeral = pathData+"geral.json"
 function pathEstado(estado){
 	return pathData+estado+"/data.csv"
 }
+
 function closeLoad(){
 	$("#load")[0].style.display="none";
 }
+
+function selecionarEstado(){
+	var point = this;
+	console.log(point);
+	var id = point.tokenValue('%mapCode');
+	var estado = id.split(".")[1];
+	if(estado=="DF")
+		return null;
+	window.location="/estado.html?q="+estado;
+}
+
 function loadGeral(){
 	d3.json(pathGeral,function(data){
 		
@@ -50,7 +62,16 @@ function loadGeral(){
 		dc.renderAll();
 		closeLoad();
 	});
-
+	$('#mapa').JSC({
+	  type: 'map',
+	  series: [{
+	    map: 'BR',
+	    defaultPoint: {
+	      eventsClick: selecionarEstado,
+	      tooltip: 'Clique para ver detalhado %province'
+	    }
+	  }]
+	});
 }
 
 function loadEstado(){

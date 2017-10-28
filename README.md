@@ -59,3 +59,6 @@
 
 </pre>
 <b>Os valores entre ** representam o significado do valor armazenado no campo</b>
+
+
+https://icons8.com/preloaders/en/free
