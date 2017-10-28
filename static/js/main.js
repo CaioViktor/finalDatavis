@@ -17,7 +17,7 @@ function selecionarEstado(){
 	var estado = id.split(".")[1];
 	if(estado=="DF")
 		return null;
-	window.location="/estado.html?q="+estado;
+	window.location=document.URL+"estado.html?q="+estado;
 }
 
 function loadGeral(){
