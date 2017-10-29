@@ -89,21 +89,28 @@ function loadEstado(){
 		d3.csv(pathEstado(estado),function(data){
 			
 			//Tratamento dos dados
-			var layers1 = [];
+			var resultados = [];
+			var cargos = [];
 			data.forEach(function(d){
 				d.votos = +d.votos;
 				d.ano_eleicao = +d.ano_eleicao;
 				d.idade_data_eleicao= +d.idade_data_eleicao;
 				d.num_turno = +d.num_turno;
-				if(layers1.indexOf(d.desc_sit_tot_turno)==-1)
-					layers1.push(d.desc_sit_tot_turno);
-			});
 
+				if(resultados.indexOf(d.desc_sit_tot_turno)==-1)
+					resultados.push(d.desc_sit_tot_turno);
+
+				if(cargos.indexOf(d.descricao_cargo)==-1)
+					cargos.push(d.descricao_cargo);
+				
+			});
+			console.log(cargos);
 
 			//Definição de Gráficos e crossfilter
 			// var bar = dc.barChart("#test");
 			var bar1 = dc.barChart("#bar1");
-			// var pie1 = dc.pieChart("#pie1");
+			var select1 = dc.selectMenu("#select1");
+			var pie1 = dc.pieChart("#pie1");
 
 			var factsQ1 = crossfilter(data);
 			
@@ -111,24 +118,23 @@ function loadEstado(){
 			var sexoDim = factsQ1.dimension(function(d){
 				return d.descricao_sexo;
 			});
+			var turnoDim = factsQ1.dimension(function(d){
+				return d.num_turno;
+			});
+
+			var cargoDim = factsQ1.dimension(function(d){
+				return d.descricao_cargo;
+			});
 
 
 			var sexoGroup = sexoDim.group().reduce(function(p,v){
 				//p: array cotendo valores para cada camada da barra
 				//v:item do dado
-				//Reduce para adicionar
-				// console.log("p+:");
-				// console.log(p);
-				// console.log("v+:");
-				// console.log(v);
+
 				p[v.desc_sit_tot_turno] = (p[v.desc_sit_tot_turno] || 0) + 1;
 				return p;
 			},function(p,v){
-				//Reduce para remover
-				// console.log("p-:");
-				// console.log(p);
-				// console.log("v-:");
-				// console.log(v);
+
 				p[v.desc_sit_tot_turno] = (p[v.desc_sit_tot_turno] || 0) - 1;
 				return p;
 			},function(p,v){
@@ -138,7 +144,6 @@ function loadEstado(){
 
 			function sel_stack(i) {
               return function(d) {
-              		// console.log(d);
                 	return d.value[i];
               };
           	}
@@ -147,26 +152,52 @@ function loadEstado(){
 
 
 			//Condiguração gráficos
-			bar1.width(600)
-				.height(600)
-				.margins({top: 50, right: 50, bottom: 25, left: 140})
+			var width = $("#chartDiv1").width();
+			var height = $("#chartDiv1").height();
+			bar1.width(width/2)
+				.height(height)
+				.margins({top: 20, right: 50, bottom: 25, left: 140})
+				.brushOn(false)
 				.dimension(sexoDim)
-				.group(sexoGroup,layers1[0],sel_stack(layers1[0]))
+				.group(sexoGroup,resultados[0],sel_stack(resultados[0]))
 				.title(function(d) {return d.key + '[' + this.layer + ']: ' + d.value[this.layer];})
 				.x(d3.scale.ordinal())
                 .xUnits(dc.units.ordinal)
                 .xAxisLabel("Sexo")
                 .yAxisLabel("Total de candidatos")
-                .renderLabel(true);
+                .renderLabel(true)
+                .elasticY(true);
 
             bar1.legend(dc.legend());
             dc.override(bar1, 'legendables', function() {
 	              var items = bar1._legendables();
 	              return items.reverse();
 	        });
-            for(var i = 2; i<layers1.length; ++i){
-            	bar1.stack(sexoGroup, ''+layers1[i], sel_stack(layers1[i]));
+            for(var i = 2; i<resultados.length; ++i){
+            	bar1.stack(sexoGroup, ''+resultados[i], sel_stack(resultados[i]));
             }
+
+
+            pie1.width(width*0.4)
+				.height(height/2)
+				.slicesCap(6)
+				.innerRadius(0)
+				.dimension(cargoDim)
+				.externalLabels(50)
+				.externalRadiusPadding(50)
+          		.drawPaths(true)
+				.group(cargoDim.group())
+				.legend(dc.legend())
+				// workaround for #703: not enough data is accessible through .label() to display percentages
+				.on('pretransition', function(chart) {
+				    chart.selectAll('text.pie-slice').text(function(d) {
+				        return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+				    })
+				});
+
+            select1.dimension(turnoDim)
+				.group(turnoDim.group())
+				.controlsUseVisibility(true);
 
 
 			//Render
