@@ -21,6 +21,19 @@ function selecionarEstado(){
 }
 
 function loadGeral(){
+	
+	$('#mapa').JSC({
+	  type: 'map',
+	  series: [{
+	    map: 'BR',
+	    defaultPoint: {
+	      eventsClick: selecionarEstado,
+	      tooltip: 'Clique para ver detalhado %province'
+	    }
+	  }]
+	});
+
+
 	d3.json(pathGeral,function(data){
 		
 		
@@ -62,16 +75,7 @@ function loadGeral(){
 		dc.renderAll();
 		closeLoad();
 	});
-	$('#mapa').JSC({
-	  type: 'map',
-	  series: [{
-	    map: 'BR',
-	    defaultPoint: {
-	      eventsClick: selecionarEstado,
-	      tooltip: 'Clique para ver detalhado %province'
-	    }
-	  }]
-	});
+	
 }
 
 function loadEstado(){
@@ -85,37 +89,84 @@ function loadEstado(){
 		d3.csv(pathEstado(estado),function(data){
 			
 			//Tratamento dos dados
+			var layers1 = [];
 			data.forEach(function(d){
 				d.votos = +d.votos;
+				d.ano_eleicao = +d.ano_eleicao;
+				d.idade_data_eleicao= +d.idade_data_eleicao;
+				d.num_turno = +d.num_turno;
+				if(layers1.indexOf(d.desc_sit_tot_turno)==-1)
+					layers1.push(d.desc_sit_tot_turno);
 			});
 
 
 			//Definição de Gráficos e crossfilter
-			var bar = dc.barChart("#test");
+			// var bar = dc.barChart("#test");
+			var bar1 = dc.barChart("#bar1");
+			// var pie1 = dc.pieChart("#pie1");
 
-			var facts = crossfilter(data);
+			var factsQ1 = crossfilter(data);
 			
 			//Código
-			var sexoDim = facts.dimension(function(d){
+			var sexoDim = factsQ1.dimension(function(d){
 				return d.descricao_sexo;
 			});
 
-			var sexoGroup = sexoDim.group();
+
+			var sexoGroup = sexoDim.group().reduce(function(p,v){
+				//p: array cotendo valores para cada camada da barra
+				//v:item do dado
+				//Reduce para adicionar
+				// console.log("p+:");
+				// console.log(p);
+				// console.log("v+:");
+				// console.log(v);
+				p[v.desc_sit_tot_turno] = (p[v.desc_sit_tot_turno] || 0) + 1;
+				return p;
+			},function(p,v){
+				//Reduce para remover
+				// console.log("p-:");
+				// console.log(p);
+				// console.log("v-:");
+				// console.log(v);
+				p[v.desc_sit_tot_turno] = (p[v.desc_sit_tot_turno] || 0) - 1;
+				return p;
+			},function(p,v){
+				//Reduce inicial
+				return {};
+			});
+
+			function sel_stack(i) {
+              return function(d) {
+              		// console.log(d);
+                	return d.value[i];
+              };
+          	}
+
 
 
 
 			//Condiguração gráficos
-			bar.width(400)
+			bar1.width(600)
 				.height(600)
-				.margins({top: 50, right: 50, bottom: 25, left: 40})
+				.margins({top: 50, right: 50, bottom: 25, left: 140})
 				.dimension(sexoDim)
-				.group(sexoGroup)
+				.group(sexoGroup,layers1[0],sel_stack(layers1[0]))
+				.title(function(d) {return d.key + '[' + this.layer + ']: ' + d.value[this.layer];})
 				.x(d3.scale.ordinal())
                 .xUnits(dc.units.ordinal)
                 .xAxisLabel("Sexo")
-                .yAxisLabel("Total de candidatos");
+                .yAxisLabel("Total de candidatos")
+                .renderLabel(true);
 
-
+            bar1.legend(dc.legend());
+            dc.override(bar1, 'legendables', function() {
+	              var items = bar1._legendables();
+	              return items.reverse();
+	        });
+            for(var i = 2; i<layers1.length; ++i){
+            	bar1.stack(sexoGroup, ''+layers1[i], sel_stack(layers1[i]));
+            }
 
 
 			//Render

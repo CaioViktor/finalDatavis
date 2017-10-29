@@ -46,3 +46,10 @@ h2 span {
 	height: 350px; 
 	margin:auto;
 }
+.chart{
+	position:absolute;
+	top:0px;
+	left: 0px;
+	min-width: 100%;
+	min-height:100%;
+}
