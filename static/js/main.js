@@ -91,6 +91,15 @@ function loadEstado(){
 			//Tratamento dos dados
 			var resultados = [];
 			var cargos = [];
+			var escolaridades = {
+				"SUPERIOR COMPLETO":6,
+				"SUPERIOR INCOMPLETO":5,
+				"ENSINO MÉDIO COMPLETO":4,
+				"ENSINO FUNDAMENTAL COMPLETO":3,
+				"ENSINO FUNDAMENTAL INCOMPLETO":2,
+				"LÊ E ESCREVE":1,
+				"ANALFABETO":0
+			};
 			data.forEach(function(d){
 				d.votos = +d.votos;
 				d.ano_eleicao = +d.ano_eleicao;
@@ -104,15 +113,16 @@ function loadEstado(){
 					cargos.push(d.descricao_cargo);
 				
 			});
-			console.log(cargos);
 
 			//Definição de Gráficos e crossfilter
 			// var bar = dc.barChart("#test");
 			var bar1 = dc.barChart("#bar1");
 			var select1 = dc.selectMenu("#select1");
 			var pie1 = dc.pieChart("#pie1");
+			
 
 			var factsQ1 = crossfilter(data);
+			
 			
 			//Código
 			var sexoDim = factsQ1.dimension(function(d){
@@ -200,9 +210,89 @@ function loadEstado(){
 				.controlsUseVisibility(true);
 
 
-			//Render
+			//Chart 2
+
+
+			// Definição de Gráficos e crossfilter
+			var scatter1 = dc.scatterPlot("#scatter1");
+			scatter1.ordering(function(d) {return escolaridades[d.key[0]]; });
+			// var scatter2 = dc.scatterPlot("#scatter2");
+			// scatter2.ordering(function(d) {return escolaridades[d.key[0]]; });
+			var select2 = dc.selectMenu("#select2");
+			var select3 = dc.selectMenu("#select3");
+
+			var factsQ2 = crossfilter(data);
+			// console.log(factsQ2);
+			//Código
+			var candidatoDim = factsQ2.dimension(function(d){
+				return [d.descricao_grau_instrucao,
+						d.idade_data_eleicao]}
+			);
+			// var eleitosDim = factsQ2.dimension(function(d){
+			// 	if(d.desc_sit_tot_turno == "ELEITO POR MÉDIA" ||d.desc_sit_tot_turno == "ELEITO POR QP"	||d.desc_sit_tot_turno == "ELEITO")
+			// 		return [d.descricao_grau_instrucao,	d.idade_data_eleicao];
+			// });
+			var cargosDim = factsQ2.dimension(function(d){
+				return d.descricao_cargo;
+			});
+
+			var partidosDim = factsQ2.dimension(function(d){
+				return d.sigla_partido;
+			});
+
+
+			var geralGroup = candidatoDim.group();
+			// var eleitosGroup = eleitosDim.group();
+
+
+			//Condiguração gráficos
+			scatter1.width(width)
+				.height(height)
+				// .x(d3.scale.linear().domain([0,6]))
+				.x(d3.scale.ordinal())
+				.xUnits(dc.units.ordinal)
+				.brushOn(false)
+				.symbolSize(8)
+				.elasticY(true)
+				.clipPadding(10)
+				.yAxisLabel("This is the Y Axis!")
+				.dimension(candidatoDim)
+				.group(geralGroup);
+			// scatter1.renderlet(function (chart) {
+			// // rotate x-axis labels
+			// 	chart.selectAll('g.x text')
+			// 	.attr('transform', 'translate(-10,10) rotate(315)');});
+
+
+
+			// scatter2.width(width)
+			// 	.height(height)
+			// 	// .x(d3.scale.linear().domain([0,6]))
+			// 	.x(d3.scale.ordinal())
+			// 	.xUnits(dc.units.ordinal)
+			// 	.brushOn(false)
+			// 	.symbolSize(8)
+			// 	.clipPadding(10)
+			// 	.yAxisLabel("This is the Y Axis!")
+			// 	.dimension(candidatoDim)
+			// 	.group(eleitosGroup);
+
+
+			select2.dimension(partidosDim)
+					.group(partidosDim.group())
+					.multiple(true)
+					.numberVisible(10)
+					.controlsUseVisibility(true);
+
+			select3.dimension(cargosDim)
+					.group(cargosDim.group())
+					.multiple(true)
+					.numberVisible(10)
+					.controlsUseVisibility(true);
+		//Render
 			dc.renderAll();
 			closeLoad();
 		});
 	}
 }
+

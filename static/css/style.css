@@ -53,3 +53,10 @@ h2 span {
 	min-width: 100%;
 	min-height:100%;
 }
+#chartDiv2{
+	position:absolute;
+	top:101%;
+	left: 0px;
+	min-width: 100%;
+	min-height:100%;	
+}
