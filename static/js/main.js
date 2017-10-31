@@ -92,9 +92,10 @@ function loadEstado(){
 			var resultados = [];
 			var cargos = [];
 			var escolaridades = {
-				"SUPERIOR COMPLETO":6,
-				"SUPERIOR INCOMPLETO":5,
-				"ENSINO MÉDIO COMPLETO":4,
+				"SUPERIOR COMPLETO":7,
+				"SUPERIOR INCOMPLETO":6,
+				"ENSINO MÉDIO COMPLETO":5,
+				"ENSINO MÉDIO INCOMPLETO":4,
 				"ENSINO FUNDAMENTAL COMPLETO":3,
 				"ENSINO FUNDAMENTAL INCOMPLETO":2,
 				"LÊ E ESCREVE":1,
@@ -216,10 +217,10 @@ function loadEstado(){
 			// Definição de Gráficos e crossfilter
 			var scatter1 = dc.scatterPlot("#scatter1");
 			scatter1.ordering(function(d) {return escolaridades[d.key[0]]; });
-			// var scatter2 = dc.scatterPlot("#scatter2");
-			// scatter2.ordering(function(d) {return escolaridades[d.key[0]]; });
+			
 			var select2 = dc.selectMenu("#select2");
 			var select3 = dc.selectMenu("#select3");
+			var select4 = dc.selectMenu("#select4");
 
 			var factsQ2 = crossfilter(data);
 			// console.log(factsQ2);
@@ -228,10 +229,6 @@ function loadEstado(){
 				return [d.descricao_grau_instrucao,
 						d.idade_data_eleicao]}
 			);
-			// var eleitosDim = factsQ2.dimension(function(d){
-			// 	if(d.desc_sit_tot_turno == "ELEITO POR MÉDIA" ||d.desc_sit_tot_turno == "ELEITO POR QP"	||d.desc_sit_tot_turno == "ELEITO")
-			// 		return [d.descricao_grau_instrucao,	d.idade_data_eleicao];
-			// });
 			var cargosDim = factsQ2.dimension(function(d){
 				return d.descricao_cargo;
 			});
@@ -240,42 +237,41 @@ function loadEstado(){
 				return d.sigla_partido;
 			});
 
+			var eleitosDim = factsQ2.dimension(function(d){
+				if(d.desc_sit_tot_turno == 'ELEITO POR MÉDIA' || d.desc_sit_tot_turno == 'ELEITO POR QP' || d.desc_sit_tot_turno == 'ELEITO')
+					return 'ELEITO';
+				return d.desc_sit_tot_turno;
+			});
 
 			var geralGroup = candidatoDim.group();
-			// var eleitosGroup = eleitosDim.group();
-
-
+			
 			//Condiguração gráficos
+			
+
 			scatter1.width(width)
 				.height(height)
-				// .x(d3.scale.linear().domain([0,6]))
 				.x(d3.scale.ordinal())
 				.xUnits(dc.units.ordinal)
 				.brushOn(false)
 				.symbolSize(8)
 				.elasticY(true)
 				.clipPadding(10)
-				.yAxisLabel("This is the Y Axis!")
+				.yAxisLabel("Idade")
 				.dimension(candidatoDim)
-				.group(geralGroup);
-			// scatter1.renderlet(function (chart) {
-			// // rotate x-axis labels
-			// 	chart.selectAll('g.x text')
-			// 	.attr('transform', 'translate(-10,10) rotate(315)');});
+				.colorAccessor(function(d){
+					return d.value;
+				})
+				.colors(d3.scale.linear().domain([1,geralGroup.top(1)[0].value])
+					      .interpolate(d3.interpolateHcl)
+					      .range([d3.rgb("#007AFF"), d3.rgb('#FFF500')]))
+				.group(geralGroup)
+				.on('preRedraw', function() {
+					scatter1.colors(d3.scale.linear().domain([1,geralGroup.top(1)[0].value])
+					      .interpolate(d3.interpolateHcl)
+					      .range([d3.rgb("#007AFF"), d3.rgb('#FFF500')]))
+				});
+				
 
-
-
-			// scatter2.width(width)
-			// 	.height(height)
-			// 	// .x(d3.scale.linear().domain([0,6]))
-			// 	.x(d3.scale.ordinal())
-			// 	.xUnits(dc.units.ordinal)
-			// 	.brushOn(false)
-			// 	.symbolSize(8)
-			// 	.clipPadding(10)
-			// 	.yAxisLabel("This is the Y Axis!")
-			// 	.dimension(candidatoDim)
-			// 	.group(eleitosGroup);
 
 
 			select2.dimension(partidosDim)
@@ -289,6 +285,10 @@ function loadEstado(){
 					.multiple(true)
 					.numberVisible(10)
 					.controlsUseVisibility(true);
+			select4.dimension(eleitosDim)
+				.group(eleitosDim.group())
+				.controlsUseVisibility(true);
+
 		//Render
 			dc.renderAll();
 			closeLoad();
