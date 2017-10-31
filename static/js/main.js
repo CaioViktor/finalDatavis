@@ -289,6 +289,74 @@ function loadEstado(){
 				.group(eleitosDim.group())
 				.controlsUseVisibility(true);
 
+
+
+			//Chart 3
+			//Definição de Gráficos e crossfilter
+			var pie2 = dc.pieChart("#pie2");
+			var select5 = dc.selectMenu("#select5");
+			var select6 = dc.selectMenu("#select6");
+			var select7 = dc.selectMenu("#select7");
+			var select8 = dc.selectMenu("#select8");
+
+			var factsQ3 = crossfilter(data);
+			//Código
+
+			var racasSexoDim = factsQ3.dimension(function(d){
+				return [d.descricao_sexo,d.descricao_cor_raca];
+			});
+
+			var turnoDim = factsQ3.dimension(function(d){
+				return d.num_turno;
+			});
+
+			var cargoDim = factsQ3.dimension(function(d){
+				return d.descricao_cargo;
+			});
+			var partidosDim = factsQ3.dimension(function(d){
+				return d.sigla_partido;
+			});
+			var eleitosDim = factsQ3.dimension(function(d){
+				if(d.desc_sit_tot_turno == 'ELEITO POR MÉDIA' || d.desc_sit_tot_turno == 'ELEITO POR QP' || d.desc_sit_tot_turno == 'ELEITO')
+					return 'ELEITO';
+				return d.desc_sit_tot_turno;
+			});
+
+			//Condiguração gráficos
+			pie2.width(width)
+				.height(height)
+				.slicesCap(6)
+				.innerRadius(0)
+				.dimension(racasSexoDim)
+				.externalLabels(50)
+				.externalRadiusPadding(50)
+          		.drawPaths(true)
+				.group(racasSexoDim.group())
+				.legend(dc.legend())
+				// workaround for #703: not enough data is accessible through .label() to display percentages
+				.on('pretransition', function(chart) {
+				    chart.selectAll('text.pie-slice').text(function(d) {
+				        return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+				    })
+				});
+
+			select5.dimension(turnoDim)
+					.group(turnoDim.group())
+					.controlsUseVisibility(true);
+			select6.dimension(cargoDim)
+					.group(cargoDim.group())
+					.multiple(true)
+					.numberVisible(10)
+					.controlsUseVisibility(true);
+			select7.dimension(partidosDim)
+					.group(partidosDim.group())
+					.multiple(true)
+					.numberVisible(10)
+					.controlsUseVisibility(true);
+
+			select8.dimension(eleitosDim)
+				.group(eleitosDim.group())
+				.controlsUseVisibility(true);
 		//Render
 			dc.renderAll();
 			closeLoad();
