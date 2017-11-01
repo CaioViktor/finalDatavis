@@ -6,13 +6,13 @@
 		{
 			'estado': '*Sigla do estado*',
 			'turno1':{
-				'quantidade': *quantidade de candidatos*,
+				'quantidade': *quantidade de candidatos por partido*,
 				'quantidade_homens': *quantidade de candidatos do sexo masculino*,
 				'quantidade_mulheres': *quantidade de candidatas do sexo feminino*,
 				'votos_por_partido':[['*Partido*',*quantidade de votos recebidos*],...],
 				'candidatos_por_situacao':[['*Situação*',*quantidade de candidatos*],...],
 				'eleitos_por_partido':[['*Partido*',*quantidade de candidatos eleitos+eleito por média + eleito por QP*],...],
-				'candidatos':*quantidade de candidatos* campo redundante,
+				'candidatos':*quantidade de candidatos*,
 				'candidatos_por_escolaridade':[['*escolaridade*',*quantidade de candidatos*],...],
 				'candidatos_por_raca':[['*reça*',*quantidade de candidatos*],...],
 				'candidatos_por_cassacao':[['*motivo cassação, onde normal não houve*',*quantidade de candidatos*],...],

@@ -26,6 +26,12 @@ function loadGeral(){
 	  type: 'map',
 	  series: [{
 	    map: 'BR',
+	    // points:[
+	    // 	{map:'BR.CE',color:'red'},
+	    // 	{map:'BR.SP',color:'green'},
+	    // 	{map:'BR.AM',color:'purple'},
+	    // 	{map:'BR.RJ',color:'black'}
+	    // ],
 	    defaultPoint: {
 	      eventsClick: selecionarEstado,
 	      tooltip: 'Clique para ver detalhado %province'
@@ -37,38 +43,78 @@ function loadGeral(){
 	d3.json(pathGeral,function(data){
 		
 		
-		//Tratamento dos dados
-		// for(var estado in data){
-		// 	// console.log(data[estado]);
-		// }
+		var maxCandidatos = 0;
+		// Tratamento dos dados
+		for(var estado in data){
+			// console.log(data[estado]);
+			var v =data[estado];
+			if(v.turno1.quantidade_homens + v.turno1.quantidade_mulheres > maxCandidatos)
+				maxCandidatos = v.turno1.quantidade_homens + v.turno1.quantidade_mulheres;
+		}
 
 		//Definição de Gráficos e crossfilter
-
+		var sexos = ['FEMININO','MASCULINO'];
 		var bar = dc.barChart("#candidatos");
-		bar.ordering(function(d){ return -d.value});
+		bar.ordering(function(d){  return (d.value.MASCULINO-d.value.FEMININO)/(d.value.MASCULINO+d.value.FEMININO)});
 		var facts = crossfilter(data);
 		
 		//Código
 		var candidatosDim = facts.dimension(function(d){
 			return d.estado;
 		});
-		var candidatosGroup = candidatosDim.group().reduceSum(function(d){
-			return d.turno1.quantidade;
+		var candidatosGroup = candidatosDim.group().reduce(function(p,v){
+			//Add
+			p['MASCULINO'] = (p[v.turno1.quantidade_homens] || 0) + v.turno1.quantidade_homens;
+			p['FEMININO'] = (p[v.turno1.quantidade_mulheres] || 0) + v.turno1.quantidade_mulheres;
+			return p;
+		},function(p,v){
+			//Remove
+			p['MASCULINO'] = (p[v.turno1.quantidade_homens] || 0) - v.turno1.quantidade_homens;
+			p['FEMININO'] = (p[v.turno1.quantidade_mulheres] || 0) - v.turno1.quantidade_mulheres;
+			return p;
+		},function(p,v){
+			//Init
+			return {};
 		});
-
+		console.log(candidatosGroup);
+		function sel_stack(i) {
+              return function(d) {
+                	return d.value[i];
+              };
+          	}
 
 		//Condiguração gráficos
+
+
+
+
 		
-		bar.width(600)
-			.height(600)
+		var width = $("#chartDiv1").width();
+		var height = $("#chartDiv1").height();
+
+        
+		
+		bar.width(width/2)
+			.height(height)
+			.brushOn(false)
+			.y(d3.scale.linear().domain([0,maxCandidatos+ (maxCandidatos*0.05)]))
 			.margins({top: 50, right: 50, bottom: 25, left: 40})
 			.dimension(candidatosDim)
-			.group(candidatosGroup)
+			.group(candidatosGroup,sexos[0],sel_stack(sexos[0]))
+			.title(function(d) {return d.key + '[' + this.layer + ']: ' + d.value[this.layer]+"\n"+(100*(d.value[this.layer])/(d.value.MASCULINO+d.value.FEMININO))+"%";})
 			.x(d3.scale.ordinal())
             .xUnits(dc.units.ordinal)
             .xAxisLabel("Estado")
+            .renderLabel(true)
             .yAxisLabel("Total de candidatos");
-
+        bar.legend(dc.legend());
+        dc.override(bar, 'legendables', function() {
+              var items = bar._legendables();
+              return items.reverse();
+        });
+        for(var i = 1; i<sexos.length; ++i){
+        	bar.stack(candidatosGroup, ''+sexos[i], sel_stack(sexos[i]));
+        }
 
 
 		//Render
@@ -112,7 +158,7 @@ function loadEstado(){
 
 				if(cargos.indexOf(d.descricao_cargo)==-1)
 					cargos.push(d.descricao_cargo);
-				
+
 			});
 
 			//Definição de Gráficos e crossfilter
@@ -159,7 +205,7 @@ function loadEstado(){
               };
           	}
 
-
+          	console.log(sexoGroup);
 
 
 			//Condiguração gráficos
@@ -174,6 +220,7 @@ function loadEstado(){
 				.title(function(d) {return d.key + '[' + this.layer + ']: ' + d.value[this.layer];})
 				.x(d3.scale.ordinal())
                 .xUnits(dc.units.ordinal)
+                // .y(d3.scale.linear().domain([0,maxCandidatos+ (maxCandidatos*0.05)]))
                 .xAxisLabel("Sexo")
                 .yAxisLabel("Total de candidatos")
                 .renderLabel(true)
@@ -184,7 +231,7 @@ function loadEstado(){
 	              var items = bar1._legendables();
 	              return items.reverse();
 	        });
-            for(var i = 2; i<resultados.length; ++i){
+            for(var i = 1; i<resultados.length; ++i){
             	bar1.stack(sexoGroup, ''+resultados[i], sel_stack(resultados[i]));
             }
 

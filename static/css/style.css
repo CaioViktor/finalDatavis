@@ -67,3 +67,7 @@ h2 span {
 	min-width: 100%;
 	min-height:100%;	
 }
+#candidatos{
+	position:absolute;
+	top:50%;
+}
