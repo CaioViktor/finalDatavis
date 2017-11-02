@@ -20,43 +20,147 @@ function selecionarEstado(){
 	window.location=document.URL+"estado.html?q="+estado;
 }
 
-function loadGeral(){
-	
-	$('#mapa').JSC({
-	  type: 'map',
-	  series: [{
-	    map: 'BR',
-	    // points:[
-	    // 	{map:'BR.CE',color:'red'},
-	    // 	{map:'BR.SP',color:'green'},
-	    // 	{map:'BR.AM',color:'purple'},
-	    // 	{map:'BR.RJ',color:'black'}
-	    // ],
-	    defaultPoint: {
-	      eventsClick: selecionarEstado,
-	      tooltip: 'Clique para ver detalhado %province'
-	    }
-	  }]
+function orderAscending(lista){
+	lista.sort(function(a,b){
+		return b[1] - a[1];
 	});
+}
 
+function topRanking(listaName,turno,arrayData){
+	var resultado = {};
+	for(var estado in arrayData){
+		var top1 = arrayData[estado][turno][listaName][0];
+		var lista = [];
+		if(resultado[top1[0]])
+			lista = resultado[top1[0]];
+		else
+			resultado[top1[0]] = lista;
+		// console.log(lista);
+		lista.push([arrayData[estado].estado,top1[1]]);
+
+	}
+	var ordenado = [];
+	for(var partido in resultado){
+		ordenado.push([partido,resultado[partido].length,resultado[partido]])
+	}
+	ordenado.sort(function(a,b){
+		return b[1] - a[1];
+	});
+	return ordenado;
+}
+function drawMap(map,lista,maxElements){
+	var marks = [];
+	if(lista != null){
+		// console.log(lista);
+		// console.log("entrou");
+		colors = ['#fff500',"#e2e2dc","#e56604","#f71a02","#3cbf03","#91018a","#0fedb5","#1710ed"];
+		if(maxElements > colors.length)
+			maxElements = colors.length;
+		if(maxElements > lista.length)
+			maxElements = lista.length;
+		var cont = 0;
+		for(var i in lista){
+			if(cont >= maxElements)
+				break;
+			jQuery('<div/>',{
+				id:'item_legenda_'+(i),
+				class:'legenda_item'
+			}).appendTo("#legenda");
+
+			jQuery('<div/>',{
+				id:'color_legenda_'+(i),
+				class:'color_legend',
+				style:'background-color: '+colors[cont]
+			}).appendTo('#item_legenda_'+(i));
+
+			jQuery('<div/>',{
+				id:'texto_legenda_'+(i),
+				class:'texto_legenda',
+				text:lista[i][0]
+			}).appendTo('#item_legenda_'+(i));
+			
+			for(var j in lista[i][2]){
+				
+			// console.log(lista[i][j]);
+				marks.push({'map':'BR.'+lista[i][2][j][0],'color':colors[cont]});
+			}
+			cont = cont +1;
+		}
+		jQuery('<div/>',{
+				id:'item_legenda_'+(maxElements),
+				class:'legenda_item'
+			}).appendTo("#legenda");
+
+			jQuery('<div/>',{
+				id:'color_legenda_'+(maxElements),
+				class:'color_legend',
+				style:'background-color: #005dff'
+			}).appendTo('#item_legenda_'+(maxElements));
+			
+			jQuery('<div/>',{
+				id:'texto_legenda_'+(maxElements),
+				class:'texto_legenda',
+				text:'Outros'
+			}).appendTo('#item_legenda_'+(maxElements));
+	}
+	// console.log(marks);
+	map.JSC({
+		  type: 'map',
+		  series: [{
+		    map: 'BR',
+		    points:marks
+		    // [
+		    	// {'map':'BR.CE','color':'#fff500'},
+		    // 	{map:'BR.SP',color:'green'},
+		    // 	{map:'BR.AM',color:'purple'},
+		    // 	{map:'BR.RJ',color:'black'}
+		    // ]
+		    ,
+		    defaultPoint: {
+		      eventsClick: selecionarEstado,
+		      tooltip: 'Clique para ver detalhado %province'
+		    }
+		  }]
+		});
+}
+function loadGeral(){
+
+	// drawMap($('#mapa'),null,6);
 
 	d3.json(pathGeral,function(data){
-		
-		
+
 		var maxCandidatos = 0;
 		// Tratamento dos dados
+		var partidosMaisCandidatos = {};
 		for(var estado in data){
 			// console.log(data[estado]);
-			var v =data[estado];
+			var v = data[estado];
 			if(v.turno1.quantidade_homens + v.turno1.quantidade_mulheres > maxCandidatos)
 				maxCandidatos = v.turno1.quantidade_homens + v.turno1.quantidade_mulheres;
+			
+			orderAscending(v.turno1.candidatos);
+			orderAscending(v.turno1.eleitos_por_partido);
+			orderAscending(v.turno1.votos_por_partido);
+			orderAscending(v.turno2.candidatos);
+			orderAscending(v.turno2.eleitos_por_partido);
+			orderAscending(v.turno2.votos_por_partido);
+
 		}
+		var partidosMaisCandidatosPorEstadoT1 = topRanking('candidatos','turno1',data);
+		// console.log(partidosMaisCandidatosPorEstadoT1);
+		drawMap($('#mapa'),partidosMaisCandidatosPorEstadoT1,6);
+		var partidosMaisEleitosPorEstadoT1 = topRanking('eleitos_por_partido','turno1',data);
+		// console.log(partidosMaisEleitosPorEstadoT1);
+
 
 		//Definição de Gráficos e crossfilter
 		var sexos = ['FEMININO','MASCULINO'];
 		var bar = dc.barChart("#candidatos");
 		bar.ordering(function(d){  return (d.value.MASCULINO-d.value.FEMININO)/(d.value.MASCULINO+d.value.FEMININO)});
 		var facts = crossfilter(data);
+
+		// console.log(data);
+
 		
 		//Código
 		var candidatosDim = facts.dimension(function(d){
@@ -76,7 +180,7 @@ function loadGeral(){
 			//Init
 			return {};
 		});
-		console.log(candidatosGroup);
+		// console.log(candidatosGroup);
 		function sel_stack(i) {
               return function(d) {
                 	return d.value[i];
