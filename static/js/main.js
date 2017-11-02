@@ -1,6 +1,14 @@
 var estadosValidos = ['AC','AL','AM','AP','BA','CE','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO']
 var pathData = "static/data/"
 var pathGeral = pathData+"geral.json"
+var rankings = {'1':{},'2':{}};
+
+function changeFilterMap(){
+	var filtro = $("#filtro_mapa")[0].value;
+	var turno = $("#turno_mapa")[0].value;
+	$("#legenda")[0].innerHTML = "";
+	drawMap($('#mapa'),rankings[turno][filtro],6);
+}
 
 function pathEstado(estado){
 	return pathData+estado+"/data.csv"
@@ -29,8 +37,11 @@ function orderAscending(lista){
 function topRanking(listaName,turno,arrayData){
 	var resultado = {};
 	for(var estado in arrayData){
+		if(arrayData[estado][turno][listaName].length <= 0)
+			continue;
 		var top1 = arrayData[estado][turno][listaName][0];
 		var lista = [];
+
 		if(resultado[top1[0]])
 			lista = resultado[top1[0]];
 		else
@@ -123,6 +134,7 @@ function drawMap(map,lista,maxElements){
 		  }]
 		});
 }
+
 function loadGeral(){
 
 	// drawMap($('#mapa'),null,6);
@@ -141,15 +153,23 @@ function loadGeral(){
 			orderAscending(v.turno1.candidatos);
 			orderAscending(v.turno1.eleitos_por_partido);
 			orderAscending(v.turno1.votos_por_partido);
+
 			orderAscending(v.turno2.candidatos);
 			orderAscending(v.turno2.eleitos_por_partido);
 			orderAscending(v.turno2.votos_por_partido);
 
 		}
-		var partidosMaisCandidatosPorEstadoT1 = topRanking('candidatos','turno1',data);
-		// console.log(partidosMaisCandidatosPorEstadoT1);
-		drawMap($('#mapa'),partidosMaisCandidatosPorEstadoT1,6);
-		var partidosMaisEleitosPorEstadoT1 = topRanking('eleitos_por_partido','turno1',data);
+
+		rankings['1']['candidatos'] = topRanking('candidatos','turno1',data);
+		rankings['1']['votos_por_partido'] = topRanking('votos_por_partido','turno1',data);
+		rankings['1']['eleitos_por_partido'] = topRanking('eleitos_por_partido','turno1',data);
+		// console.log(data);
+		rankings['2']['candidatos'] = topRanking('candidatos','turno2',data);
+		rankings['2']['votos_por_partido'] = topRanking('votos_por_partido','turno2',data);
+		rankings['2']['eleitos_por_partido'] = topRanking('eleitos_por_partido','turno2',data);
+
+		
+		drawMap($('#mapa'),rankings['1']['candidatos'],6);
 		// console.log(partidosMaisEleitosPorEstadoT1);
 
 

@@ -21,6 +21,17 @@
 		<div id="Q1" class="chart">
 			<div id="mapa"></div>
 			<div id="legenda"></div>
+			Turno:
+			<select id="turno_mapa" onchange="changeFilterMap();">
+				<option value="1" selected="true">1º Turno</option>
+				<option value="2">2º Turno</option>
+			</select>
+			Filtro:
+			<select id="filtro_mapa" onchange="changeFilterMap();">
+				<option value="candidatos" selected="true">Quantidade de candidatos</option>
+				<option value="votos_por_partido">Votos por partido</option>
+				<option value="eleitos_por_partido">Eleitos por partido</option>
+			</select>
 		</div>
 		<div id="candidatos" class="chart"></div>
 	</body>
