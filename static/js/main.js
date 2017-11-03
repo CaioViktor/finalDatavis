@@ -344,6 +344,56 @@ function loadGeral(){
 				.numberVisible(10)
 				.controlsUseVisibility(true);
 		//Render
+
+		//Q5
+		//Definição de Gráficos e crossfilter
+		
+		var factsG5 = crossfilter(data);
+		var row1 = dc.rowChart("#row1");
+		row1.ordering(function(d){return -d.value});
+
+		//Código
+		var idadeDim = factsG5.dimension(function(d){
+			return d.estado;
+		});
+		var idadeGroup = idadeDim.group().reduceSum(function(d){
+			return d.turno1.idade_media;
+		})
+		console.log(idadeGroup);
+		//Condiguração gráficos
+		row1.width(width)
+			.height(height)
+			.dimension(idadeDim)
+			.group(idadeGroup)
+			.x(d3.scale.linear().domain(d3.extent(data,function(d){return d.turno1.idade_media})))
+			.margins({top: 50, right: 50, bottom: 25, left: 40})
+			.elasticX(true);
+
+
+
+		//Q6
+		//Definição de Gráficos e crossfilter
+		
+		var factsG6 = crossfilter(data);
+		var row2 = dc.rowChart("#row2");
+		row2.ordering(function(d){return -d.value});
+
+		//Código
+		var idadeDimG6 = factsG6.dimension(function(d){
+			return d.estado;
+		});
+		var idadeGroupG6 = idadeDimG6.group().reduceSum(function(d){
+			return d.turno1.idade_media_eleito;
+		})
+		
+		//Condiguração gráficos
+		row2.width(width)
+			.height(height)
+			.dimension(idadeDimG6)
+			.group(idadeGroupG6)
+			.x(d3.scale.linear().domain(d3.extent(data,function(d){return d.turno1.idade_media_eleito})))
+			.margins({top: 50, right: 50, bottom: 25, left: 40})
+			.elasticX(true);
 		dc.renderAll();
 		closeLoad();
 	});
@@ -431,7 +481,6 @@ function loadEstado(){
               };
           	}
 
-          	console.log(sexoGroup);
 
 
 			//Condiguração gráficos

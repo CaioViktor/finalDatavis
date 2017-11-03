@@ -67,10 +67,7 @@ h2 span {
 	min-width: 100%;
 	min-height:100%;	
 }
-#candidatos{
-	position:absolute;
-	top:60%;
-}
+
 .color_legend{
 	float: left;
 	height: 30px;
@@ -90,11 +87,23 @@ h2 span {
 	right: 0%;
 
 }
+#Q2{
+	position: absolute;
+	top: 70%;
+}
 #Q3{
 	position: absolute;
 	top: 200%;
 }
 #Q4{
 	position: absolute;
-	top: 300%;
+	top: 350%;
+}
+#Q5{
+	position: absolute;
+	top: 500%;
+}
+#Q6{
+	position: absolute;
+	top: 600%;
 }
