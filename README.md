@@ -6,7 +6,7 @@
 		{
 			'estado': '*Sigla do estado*',
 			'turno1':{
-				'quantidade': *quantidade de candidatos por partido*,
+				'quantidade': [['*Partido*',*quantidade de candidatos*],...],
 				'quantidade_homens': *quantidade de candidatos do sexo masculino*,
 				'quantidade_mulheres': *quantidade de candidatas do sexo feminino*,
 				'votos_por_partido':[['*Partido*',*quantidade de votos recebidos*],...],

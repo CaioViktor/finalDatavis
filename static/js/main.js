@@ -144,6 +144,7 @@ function loadGeral(){
 		var maxCandidatos = 0;
 		// Tratamento dos dados
 		var partidosMaisCandidatos = {};
+		var escolaridades = [];
 		for(var estado in data){
 			// console.log(data[estado]);
 			var v = data[estado];
@@ -158,8 +159,12 @@ function loadGeral(){
 			orderAscending(v.turno2.eleitos_por_partido);
 			orderAscending(v.turno2.votos_por_partido);
 
+			var escolaridade = v.turno1.candidatos_por_escolaridade.map(function(el){
+				return {'estado': data[estado].estado,'escolaridade':el[0],'quantidade':el[1]};
+			});
+			escolaridades = escolaridades.concat(escolaridade);
 		}
-
+		
 		rankings['1']['candidatos'] = topRanking('candidatos','turno1',data);
 		rankings['1']['votos_por_partido'] = topRanking('votos_por_partido','turno1',data);
 		rankings['1']['eleitos_por_partido'] = topRanking('eleitos_por_partido','turno1',data);
@@ -172,6 +177,8 @@ function loadGeral(){
 		drawMap($('#mapa'),rankings['1']['candidatos'],6);
 		// console.log(partidosMaisEleitosPorEstadoT1);
 
+
+		//Q2
 
 		//Definição de Gráficos e crossfilter
 		var sexos = ['FEMININO','MASCULINO'];
@@ -240,7 +247,50 @@ function loadGeral(){
         	bar.stack(candidatosGroup, ''+sexos[i], sel_stack(sexos[i]));
         }
 
+        //Q3
+        //Definição de Gráficos e crossfilter
+        var factsG3 = crossfilter(escolaridades);
+        var pieG1 = dc.pieChart("#pieG1");
+        var selectG1 = dc.selectMenu("#selectG1");
 
+        //Código
+        var escolaridadeDim = factsG3.dimension(function(d){
+        	return d.escolaridade;
+        });
+
+        var escolaridadeGroup = escolaridadeDim.group().reduceSum(function(d){
+        	return d.quantidade;
+        });
+
+        var estadoDimQ3 = factsG3.dimension(function(d){
+        	return d.estado;
+        });
+        
+        //Condiguração gráficos
+        var width = $("#Q3").width();
+		var height = $("#Q3").height();
+        pieG1.width(width)
+				.height(height)
+				.slicesCap(6)
+				.innerRadius(0)
+				.dimension(escolaridadeDim)
+				.externalLabels(50)
+				.externalRadiusPadding(50)
+          		.drawPaths(true)
+				.group(escolaridadeGroup)
+				.legend(dc.legend())
+				// workaround for #703: not enough data is accessible through .label() to display percentages
+				.on('pretransition', function(chart) {
+				    chart.selectAll('text.pie-slice').text(function(d) {
+				        return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+				    })
+				});
+
+            selectG1.dimension(estadoDimQ3)
+				.group(estadoDimQ3.group())
+				.multiple(true)
+				.numberVisible(10)
+				.controlsUseVisibility(true);
 		//Render
 		dc.renderAll();
 		closeLoad();
