@@ -14,7 +14,7 @@
 				'eleitos_por_partido':[['*Partido*',*quantidade de candidatos eleitos+eleito por média + eleito por QP*],...],
 				'candidatos':*quantidade de candidatos*,
 				'candidatos_por_escolaridade':[['*escolaridade*',*quantidade de candidatos*],...],
-				'candidatos_por_raca':[['*reça*',*quantidade de candidatos*],...],
+				'candidatos_por_raca':[['*raça*',*quantidade de candidatos*],...],
 				'candidatos_por_cassacao':[['*motivo cassação, onde normal não houve*',*quantidade de candidatos*],...],
 				'idade_media':*média*,
 				'idade_media_eleito':*média*,

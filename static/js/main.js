@@ -145,6 +145,7 @@ function loadGeral(){
 		// Tratamento dos dados
 		var partidosMaisCandidatos = {};
 		var escolaridades = [];
+		var racas = [];
 		for(var estado in data){
 			// console.log(data[estado]);
 			var v = data[estado];
@@ -163,6 +164,11 @@ function loadGeral(){
 				return {'estado': data[estado].estado,'escolaridade':el[0],'quantidade':el[1]};
 			});
 			escolaridades = escolaridades.concat(escolaridade);
+
+			var raca = v.turno1.candidatos_por_raca.map(function(el){
+				return {'estado': data[estado].estado,'raca':el[0],'quantidade':el[1]};
+			});
+			racas = racas.concat(raca);
 		}
 		
 		rankings['1']['candidatos'] = topRanking('candidatos','turno1',data);
@@ -288,6 +294,52 @@ function loadGeral(){
 
             selectG1.dimension(estadoDimQ3)
 				.group(estadoDimQ3.group())
+				.multiple(true)
+				.numberVisible(10)
+				.controlsUseVisibility(true);
+
+
+		//Q4
+        //Definição de Gráficos e crossfilter
+        var factsG4 = crossfilter(racas);
+        var pieG2 = dc.pieChart("#pieG2");
+        var selectG2 = dc.selectMenu("#selectG2");
+
+        //Código
+        var racaDim = factsG4.dimension(function(d){
+        	return d.raca;
+        });
+
+        var racaGroup = racaDim.group().reduceSum(function(d){
+        	return d.quantidade;
+        });
+
+        var estadoDimQ4 = factsG4.dimension(function(d){
+        	return d.estado;
+        });
+        
+        //Condiguração gráficos
+        var width = $("#Q4").width();
+		var height = $("#Q4").height();
+        pieG2.width(width)
+				.height(height)
+				.slicesCap(5)
+				.innerRadius(0)
+				.dimension(racaDim)
+				.externalLabels(50)
+				.externalRadiusPadding(50)
+          		.drawPaths(true)
+				.group(racaGroup)
+				.legend(dc.legend())
+				// workaround for #703: not enough data is accessible through .label() to display percentages
+				.on('pretransition', function(chart) {
+				    chart.selectAll('text.pie-slice').text(function(d) {
+				        return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+				    })
+				});
+
+            selectG2.dimension(estadoDimQ4)
+				.group(estadoDimQ4.group())
 				.multiple(true)
 				.numberVisible(10)
 				.controlsUseVisibility(true);
