@@ -169,7 +169,14 @@ function loadGeral(){
 				return {'estado': data[estado].estado,'raca':el[0],'quantidade':el[1]};
 			});
 			racas = racas.concat(raca);
+
+			v.turno1.totalCassacoes = 0;
+			for(var cassacao = 0; cassacao < v.turno1.candidatos_por_cassacao.length ; cassacao = cassacao+1)
+				if(v.turno1.candidatos_por_cassacao[cassacao][0] != "normal")
+					v.turno1.totalCassacoes = v.turno1.totalCassacoes + v.turno1.candidatos_por_cassacao[cassacao][1];
+			v.turno1.percentualCassacoes = Math.round((v.turno1.totalCassacoes/v.turno1.quantidade) * 10000)/100;
 		}
+		console.log(data);
 		
 		rankings['1']['candidatos'] = topRanking('candidatos','turno1',data);
 		rankings['1']['votos_por_partido'] = topRanking('votos_por_partido','turno1',data);
@@ -359,7 +366,6 @@ function loadGeral(){
 		var idadeGroup = idadeDim.group().reduceSum(function(d){
 			return d.turno1.idade_media;
 		})
-		console.log(idadeGroup);
 		//Condiguração gráficos
 		row1.width(width)
 			.height(height)
@@ -394,6 +400,38 @@ function loadGeral(){
 			.x(d3.scale.linear().domain(d3.extent(data,function(d){return d.turno1.idade_media_eleito})))
 			.margins({top: 50, right: 50, bottom: 25, left: 40})
 			.elasticX(true);
+
+
+		//Q7
+		//Definição de Gráficos e crossfilter
+		
+		var factsG7 = crossfilter(data);
+		var row3 = dc.rowChart("#row3");
+		row3.ordering(function(d){return -d.value});
+
+		//Código
+		var percentualCassacoesDim = factsG7.dimension(function(d){
+			return d.estado;
+		});
+		var percentualCassacoesGroup = percentualCassacoesDim.group().reduceSum(function(d){
+			return d.turno1.percentualCassacoes;
+		})
+		
+		//Condiguração gráficos
+		row3.width(width)
+			.height(height)
+			.dimension(percentualCassacoesDim)
+			.group(percentualCassacoesGroup)
+			.x(d3.scale.linear().domain(d3.extent(data,function(d){return d.turno1.percentualCassacoes})))
+			.margins({top: 50, right: 50, bottom: 25, left: 40})
+			.title(function(d){
+				// return "candidatos:"++"\ncassados:"++"\npercentual de cassados:"+d.value;
+				
+				return "\npercentual de cassados:"+d.value;
+			})
+			.elasticX(true);
+
+
 		dc.renderAll();
 		closeLoad();
 	});
@@ -436,6 +474,7 @@ function loadEstado(){
 					cargos.push(d.descricao_cargo);
 
 			});
+			
 
 			//Definição de Gráficos e crossfilter
 			// var bar = dc.barChart("#test");
