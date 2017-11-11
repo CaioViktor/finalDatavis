@@ -74,7 +74,13 @@ h2 span {
 	min-width: 100%;
 	min-height:100%;	
 }
-
+#chartDiv4{
+	position:absolute;
+	top:450%;
+	left: 0px;
+	min-width: 100%;
+	min-height:100%;	
+}
 .color_legend{
 	float: left;
 	height: 30px;
