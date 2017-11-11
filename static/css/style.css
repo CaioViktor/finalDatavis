@@ -111,3 +111,24 @@ h2 span {
 	position: absolute;
 	top: 700%;
 }
+#gradient{
+	background: -webkit-linear-gradient(bottom,#ffff00,#3d3d00);
+	/* For Opera 11.1 to 12.0 */
+	background: -o-linear-gradient(bottom,#ffff00,#3d3d00);
+	/* For Fx 3.6 to 15 */
+	background: -moz-linear-gradient(bottom,#ffff00,#3d3d00);
+	/* Standard syntax */
+	background: linear-gradient(to top,#ffff00,#3d3d00); 
+	min-height: 200px;
+	min-width: 20px;
+	width: 10%;
+	height: 30%;
+	
+
+}
+#legendaLinear{
+	position: absolute;
+	top: 0%;
+	margin-top: 5%;
+	right: 0%;
+}

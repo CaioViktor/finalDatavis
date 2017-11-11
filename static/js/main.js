@@ -176,7 +176,7 @@ function loadGeral(){
 					v.turno1.totalCassacoes = v.turno1.totalCassacoes + v.turno1.candidatos_por_cassacao[cassacao][1];
 			v.turno1.percentualCassacoes = Math.round((v.turno1.totalCassacoes/v.turno1.quantidade) * 10000)/100;
 		}
-		console.log(data);
+		// console.log(data);
 		
 		rankings['1']['candidatos'] = topRanking('candidatos','turno1',data);
 		rankings['1']['votos_por_partido'] = topRanking('votos_por_partido','turno1',data);
@@ -604,11 +604,19 @@ function loadEstado(){
 				return d.desc_sit_tot_turno;
 			});
 
+			var color = d3.rgb('yellow');
+			// console.log(color.toString());
+			// console.log(color.darker(4).toString());
 			var geralGroup = candidatoDim.group();
 			
+			// var quantize = d3.scale.quantize()
+   //                .domain([1,geralGroup.top(1)[0].value])
+   //                .range(colorbrewer.Greens[6]);
+   			var minValue = geralGroup.top(geralGroup.size())[geralGroup.size()-1].value;
+   			var maxValue = geralGroup.top(1)[0].value;
 			//Condiguração gráficos
 			
-
+			
 			scatter1.width(width)
 				.height(height)
 				.x(d3.scale.ordinal())
@@ -622,17 +630,38 @@ function loadEstado(){
 				.colorAccessor(function(d){
 					return d.value;
 				})
-				.colors(d3.scale.linear().domain([1,geralGroup.top(1)[0].value])
-					      .interpolate(d3.interpolateHcl)
-					      .range([d3.rgb("#007AFF"), d3.rgb('#FFF500')]))
+				.colors(
+						d3.scale.linear().domain([minValue,maxValue])
+					      // .interpolate(d3.interpolateHcl)
+					      .range([color, color.darker(4)])
+					 	// quantize
+					    )
 				.group(geralGroup)
 				.on('preRedraw', function() {
-					scatter1.colors(d3.scale.linear().domain([1,geralGroup.top(1)[0].value])
-					      .interpolate(d3.interpolateHcl)
-					      .range([d3.rgb("#007AFF"), d3.rgb('#FFF500')]))
+					scatter1.colors(
+						d3.scale.linear().domain([minValue,maxValue])
+					      // .interpolate(d3.interpolateHcl)
+					      .range([color, color.darker(4)])
+					 // quantize
+					)
 				});
-				
+				jQuery("<div/>",{
+					id:"legendaLinear"
 
+				}).appendTo("#scatter1");
+
+				jQuery("<b/>",{
+					text:maxValue
+
+				}).appendTo("#legendaLinear");
+				jQuery("<div/>",{
+					id:"gradient"
+
+				}).appendTo("#legendaLinear");
+				jQuery("<b/>",{
+					text:minValue
+
+				}).appendTo("#legendaLinear");
 
 
 			select2.dimension(partidosDim)
