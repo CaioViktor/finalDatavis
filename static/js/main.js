@@ -480,7 +480,8 @@ function loadEstado(){
 			// var bar = dc.barChart("#test");
 			var bar1 = dc.barChart("#bar1");
 			var select1 = dc.selectMenu("#select1");
-			var pie1 = dc.pieChart("#pie1");
+			// var pie1 = dc.pieChart("#pie1");
+			var select9 = dc.selectMenu("#select9");
 			
 
 			var factsQ1 = crossfilter(data);
@@ -525,7 +526,7 @@ function loadEstado(){
 			//Condiguração gráficos
 			var width = $("#chartDiv1").width();
 			var height = $("#chartDiv1").height();
-			bar1.width(width/2)
+			bar1.width(width*0.7)
 				.height(height)
 				.margins({top: 20, right: 50, bottom: 25, left: 140})
 				.brushOn(false)
@@ -550,26 +551,31 @@ function loadEstado(){
             }
 
 
-            pie1.width(width*0.4)
-				.height(height/2)
-				.slicesCap(6)
-				.innerRadius(0)
-				.dimension(cargoDim)
-				.externalLabels(50)
-				.externalRadiusPadding(50)
-          		.drawPaths(true)
-				.group(cargoDim.group())
-				.legend(dc.legend())
-				// workaround for #703: not enough data is accessible through .label() to display percentages
-				.on('pretransition', function(chart) {
-				    chart.selectAll('text.pie-slice').text(function(d) {
-				        return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
-				    })
-				});
+    //         pie1.width(width*0.4)
+				// .height(height/2)
+				// .slicesCap(6)
+				// .innerRadius(0)
+				// .dimension(cargoDim)
+				// .externalLabels(50)
+				// .externalRadiusPadding(50)
+    //       		.drawPaths(true)
+				// .group(cargoDim.group())
+				// .legend(dc.legend())
+				// // workaround for #703: not enough data is accessible through .label() to display percentages
+				// .on('pretransition', function(chart) {
+				//     chart.selectAll('text.pie-slice').text(function(d) {
+				//         return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+				//     })
+				// });
 
             select1.dimension(turnoDim)
 				.group(turnoDim.group())
 				.controlsUseVisibility(true);
+			select9.dimension(cargoDim)
+					.group(cargoDim.group())
+					.controlsUseVisibility(true)
+					.multiple(true)
+					.numberVisible(6);
 
 
 			//Chart 2
