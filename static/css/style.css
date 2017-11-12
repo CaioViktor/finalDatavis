@@ -43,15 +43,16 @@ h2 span {
 }
 #mapa{
 	width: 100%; 
-	height: 350px; 
+	height: 100%; 
 	margin:auto;
 }
 .chart{
-	position:absolute;
-	top:0px;
-	left: 0px;
 	min-width: 100%;
 	min-height:100%;
+	width: 100%;
+	height:100%;
+	position: absolute;
+	left: 0%;
 }
 #chartDiv1{
 	position:absolute;
@@ -62,7 +63,7 @@ h2 span {
 }
 #chartDiv2{
 	position:absolute;
-	top:101%;
+	top:201%;
 	left: 0px;
 	min-width: 100%;
 	min-height:100%;	
@@ -96,33 +97,51 @@ h2 span {
 #legenda{
 	position: absolute;
 	top: 0%;
-	margin-top: 5%;
+	margin-top: 10%;
 	right: 0%;
+
+}
+#Q1{
+	position: absolute;
+	top: 0%;
+	
 
 }
 #Q2{
 	position: absolute;
-	top: 70%;
+	top: 100%;
+	background-color: #f71b1b;
+	
 }
 #Q3{
 	position: absolute;
 	top: 200%;
+	background-color: #ffeb0f;
+	
 }
 #Q4{
 	position: absolute;
-	top: 350%;
+	top: 300%;
+	background-color: #21cc90;
+	
 }
 #Q5{
 	position: absolute;
-	top: 500%;
+	top: 400%;
+	background-color: #00cefc;
+	
 }
 #Q6{
 	position: absolute;
-	top: 600%;
+	top: 500%;
+	background-color: #332cf9;
+	
 }
 #Q7{
 	position: absolute;
-	top: 700%;
+	top: 600%;
+	background-color: #ff4f75;
+	
 }
 #gradient{
 	background: -webkit-linear-gradient(bottom,#ffff00,#3d3d00);
@@ -144,4 +163,47 @@ h2 span {
 	top: 0%;
 	margin-top: 5%;
 	right: 0%;
+}
+.filtro_buttom{
+	moz-border-radius: 15px 15px 15px 15px;
+	-webkit-border-radius: 15px 15px 15px 15px;
+	moz-box-shadow:2px 2px 5px #000000;
+	-webkit-box-shadow:2px 2px 5px #000000;
+	background-color: #8506ce;
+	z-index: 1000;
+	height: 30px;
+	width: 30px;
+	position: absolute;
+	top: 0%;
+	right: 0%;
+	text-align: center;
+	margin-top: 120px;
+	margin-right:100px;
+}
+
+.filtro_buttom img{
+	padding-top: 5px;
+	height: 24px;
+	width: 24px;
+
+}
+.filtro_buttom:hover{
+	cursor: pointer;
+}
+
+.filtro{
+	display: none;
+	background-color: white;
+	moz-border-radius: 8px 8px 8px 8px;
+	-webkit-border-radius: 8px 8px 8px 8px;
+	moz-box-shadow:2px 2px 5px #000000;
+	-webkit-box-shadow:2px 2px 5px #000000;
+	min-width: 50%;
+	min-height: 50%;
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	background: rgba(255, 255, 255, 0.5);
+	padding: 5px 5px 5px 5px;
+
 }

@@ -3,11 +3,21 @@ var pathData = "static/data/"
 var pathGeral = pathData+"geral.json"
 var rankings = {'1':{},'2':{}};
 
+
+
 function changeFilterMap(){
 	var filtro = $("#filtro_mapa")[0].value;
 	var turno = $("#turno_mapa")[0].value;
 	$("#legenda")[0].innerHTML = "";
 	drawMap($('#mapa'),rankings[turno][filtro],6);
+}
+
+function clickFilter(el){
+	var df = $("#d"+el.id)[0];
+	if(df.style.display != "block")
+		df.style.display = "block";
+	else
+		df.style.display = "none";
 }
 
 function pathEstado(estado){
@@ -143,9 +153,9 @@ function loadGeral(){
 
 		var maxCandidatos = 0;
 		// Tratamento dos dados
-		var partidosMaisCandidatos = {};
 		var escolaridades = [];
 		var racas = [];
+		var quantidade_candidatos = {};
 		for(var estado in data){
 			// console.log(data[estado]);
 			var v = data[estado];
@@ -175,6 +185,7 @@ function loadGeral(){
 				if(v.turno1.candidatos_por_cassacao[cassacao][0] != "normal")
 					v.turno1.totalCassacoes = v.turno1.totalCassacoes + v.turno1.candidatos_por_cassacao[cassacao][1];
 			v.turno1.percentualCassacoes = Math.round((v.turno1.totalCassacoes/v.turno1.quantidade) * 10000)/100;
+			quantidade_candidatos[v.estado] = [v.turno1.totalCassacoes,v.turno1.quantidade]
 		}
 		// console.log(data);
 		
@@ -233,13 +244,13 @@ function loadGeral(){
 
 
 		
-		var width = $("#chartDiv1").width();
-		var height = $("#chartDiv1").height();
+		var widthL = $("#Q1").width();
+		var heightL = $("#Q1").height();
 
         
 		
-		bar.width(width/2)
-			.height(height)
+		bar.width(widthL)
+			.height(heightL*0.8)
 			.brushOn(false)
 			.y(d3.scale.linear().domain([0,maxCandidatos+ (maxCandidatos*0.05)]))
 			.margins({top: 50, right: 50, bottom: 25, left: 40})
@@ -280,10 +291,8 @@ function loadGeral(){
         });
         
         //Condiguração gráficos
-        var width = $("#Q3").width();
-		var height = $("#Q3").height();
-        pieG1.width(width)
-				.height(height)
+        pieG1.width(widthL)
+				.height(heightL*0.8)
 				.slicesCap(6)
 				.innerRadius(0)
 				.dimension(escolaridadeDim)
@@ -326,10 +335,8 @@ function loadGeral(){
         });
         
         //Condiguração gráficos
-        var width = $("#Q4").width();
-		var height = $("#Q4").height();
-        pieG2.width(width)
-				.height(height)
+        pieG2.width(widthL)
+				.height(heightL*0.8)
 				.slicesCap(5)
 				.innerRadius(0)
 				.dimension(racaDim)
@@ -367,12 +374,12 @@ function loadGeral(){
 			return d.turno1.idade_media;
 		})
 		//Condiguração gráficos
-		row1.width(width)
-			.height(height)
+		row1.width(widthL)
+			.height(heightL*0.8)
 			.dimension(idadeDim)
 			.group(idadeGroup)
 			.x(d3.scale.linear().domain(d3.extent(data,function(d){return d.turno1.idade_media})))
-			.margins({top: 50, right: 50, bottom: 25, left: 40})
+			// .margins({top: 50, right: 50, bottom: 25, left: 40})
 			.elasticX(true);
 
 
@@ -393,12 +400,12 @@ function loadGeral(){
 		})
 		
 		//Condiguração gráficos
-		row2.width(width)
-			.height(height)
+		row2.width(widthL)
+			.height(heightL*0.8)
 			.dimension(idadeDimG6)
 			.group(idadeGroupG6)
 			.x(d3.scale.linear().domain(d3.extent(data,function(d){return d.turno1.idade_media_eleito})))
-			.margins({top: 50, right: 50, bottom: 25, left: 40})
+			// .margins({top: 50, right: 50, bottom: 25, left: 40})
 			.elasticX(true);
 
 
@@ -418,16 +425,16 @@ function loadGeral(){
 		})
 		
 		//Condiguração gráficos
-		row3.width(width)
-			.height(height)
+		row3.width(widthL)
+			.height(heightL*0.8)
 			.dimension(percentualCassacoesDim)
 			.group(percentualCassacoesGroup)
 			.x(d3.scale.linear().domain(d3.extent(data,function(d){return d.turno1.percentualCassacoes})))
-			.margins({top: 50, right: 50, bottom: 25, left: 40})
+			// .margins({top: 50, right: 50, bottom: 25, left: 40})
 			.title(function(d){
 				// return "candidatos:"++"\ncassados:"++"\npercentual de cassados:"+d.value;
 				
-				return "\npercentual de cassados:"+d.value;
+				return "\npercentual de cassados:"+d.value+"%\nTotal candidatos:"+quantidade_candidatos[d.key][1]+"\nTotal cassações:"+quantidade_candidatos[d.key][0];
 			})
 			.elasticX(true);
 
@@ -502,6 +509,7 @@ function loadEstado(){
 			});
 
 
+
 			var sexoGroup = sexoDim.group().reduce(function(p,v){
 				//p: array cotendo valores para cada camada da barra
 				//v:item do dado
@@ -573,11 +581,14 @@ function loadEstado(){
             select1.dimension(turnoDim)
 				.group(turnoDim.group())
 				.controlsUseVisibility(true);
+
 			select9.dimension(cargoDim)
 					.group(cargoDim.group())
 					.controlsUseVisibility(true)
 					.multiple(true)
 					.numberVisible(6);
+
+
 
 
 			//Chart 2
@@ -770,7 +781,7 @@ function loadEstado(){
 			var cassacoesGroup = partidoDim.group().reduceSum(function(d){
 				return (d.cassacao != "normal")/(quantidade_candidatos[d.sigla_partido] / 100);
 			});
-			console.log(cassacoesGroup);
+			
 
 			var cargoDim = factsQ4.dimension(function(d){
 				return d.descricao_cargo;

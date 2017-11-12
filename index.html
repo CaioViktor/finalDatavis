@@ -19,38 +19,55 @@
 	<body onload="loadGeral();">
 		<div id="load"><img src="static/images/load.gif"></div>
 		<div id="Q1" class="chart">
+			<h1>Popularidade de partidos por estado</h1>
 			<div id="mapa"></div>
 			<div id="legenda"></div>
-			Turno:
-			<select id="turno_mapa" onchange="changeFilterMap();">
-				<option value="1" selected="true">1º Turno</option>
-				<option value="2">2º Turno</option>
-			</select>
-			Filtro:
-			<select id="filtro_mapa" onchange="changeFilterMap();">
-				<option value="candidatos" selected="true">Quantidade de candidatos</option>
-				<option value="votos_por_partido">Votos por partido</option>
-				<option value="eleitos_por_partido">Eleitos por partido</option>
-			</select>
+			<div id="f1" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/funnel.png" title="Configurar filtros"></div>
+			<div id="df1" class = "filtro">
+				Turno:
+				<select id="turno_mapa" onchange="changeFilterMap();">
+					<option value="1" selected="true">1º Turno</option>
+					<option value="2">2º Turno</option>
+				</select>
+				Filtro:
+				<select id="filtro_mapa" onchange="changeFilterMap();">
+					<option value="candidatos" selected="true">Quantidade de candidatos</option>
+					<option value="votos_por_partido">Votos por partido</option>
+					<option value="eleitos_por_partido">Eleitos por partido</option>
+				</select>
+			</div>
 		</div>
 		<div id="Q2" class="chart">
+			<h1>Taxa de homens e mulheres por estado</h1>
 			<div id="candidatos" class="chart"></div>
 		</div>
 		<div id="Q3" class="chart">
+			<h1>Taxa de escolaridade dos candidatos por estado</h1>
 			<div id="pieG1"></div>
-			<div id="selectG1"></div>
+			<div id="f2" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/funnel.png" title="Configurar filtros"></div>
+			<div id="df2" class="filtro" >
+				
+				<div id="selectG1">Estado:</div>
+			</div>
 		</div>
 		<div id="Q4" class="chart">
+			<h1>Taxa de etnia ou raça de canditatos por estado</h1>
 			<div id="pieG2"></div>
-			<div id="selectG2"></div>
+			<div id="f3" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/funnel.png" title="Configurar filtros"></div>
+			<div id="df3" class="filtro" >
+				<div id="selectG2">Estado:</div>
+			</div>
 		</div>
 		<div id="Q5" class="chart">
+			<h1>Idade média dos candidatos por estado</h1>
 			<div id="row1"></div>
 		</div>
 		<div id="Q6" class="chart">
+			<h1>Idade média dos candidatos eleitos por estado</h1>
 			<div id="row2"></div>
 		</div>
 		<div id="Q7" class="chart">
+			<h1>Percentual de cassações por estado</h1>
 			<div id="row3"><div>
 		</div>
 	</body>
