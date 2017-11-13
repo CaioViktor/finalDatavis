@@ -97,15 +97,22 @@ h2 span {
 #legenda{
 	position: absolute;
 	top: 0%;
-	margin-top: 10%;
+	margin-top: 5%;
 	right: 0%;
 
 }
 #Q1{
 	position: absolute;
 	top: 0%;
-	
+}
 
+#Q1 h1{
+	margin: 0px 0px 0px 0px;
+}
+
+#bar1Q1{
+	position: absolute;
+	top: 60%;	
 }
 #Q2{
 	position: absolute;
@@ -177,7 +184,7 @@ h2 span {
 	top: 0%;
 	right: 0%;
 	text-align: center;
-	margin-top: 120px;
+	margin-top: 100px;
 	margin-right:100px;
 }
 
@@ -198,12 +205,17 @@ h2 span {
 	-webkit-border-radius: 8px 8px 8px 8px;
 	moz-box-shadow:2px 2px 5px #000000;
 	-webkit-box-shadow:2px 2px 5px #000000;
-	min-width: 50%;
+	width: auto;
 	min-height: 50%;
 	position: absolute;
-	top: 25%;
-	left: 25%;
+	top: 100px;
+	right: 0%;
+	margin-right: 100px;
 	background: rgba(255, 255, 255, 0.5);
-	padding: 5px 5px 5px 5px;
+	padding: 5px 30px 5px 5px;
 
+}
+
+g text{
+	fill:black !important;
 }

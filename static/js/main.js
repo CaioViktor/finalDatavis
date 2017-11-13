@@ -126,23 +126,30 @@ function drawMap(map,lista,maxElements){
 	}
 	// console.log(marks);
 	map.JSC({
-		  type: 'map',
-		  series: [{
-		    map: 'BR',
-		    points:marks
-		    // [
-		    	// {'map':'BR.CE','color':'#fff500'},
-		    // 	{map:'BR.SP',color:'green'},
-		    // 	{map:'BR.AM',color:'purple'},
-		    // 	{map:'BR.RJ',color:'black'}
-		    // ]
-		    ,
-		    defaultPoint: {
-		      eventsClick: selecionarEstado,
-		      tooltip: 'Clique para ver detalhado %province'
-		    }
-		  }]
-		});
+			type: 'map',
+			annotations: [{
+			    label: {
+			      text: 'Clique em um estado para visão detalhada',
+			      styleFontSize: 14
+			    },
+			    position: '20,0'
+			}],
+			series: [{
+					map: 'BR',
+					points:marks
+					// [
+						// {'map':'BR.CE','color':'#fff500'},
+					// 	{map:'BR.SP',color:'green'},
+					// 	{map:'BR.AM',color:'purple'},
+					// 	{map:'BR.RJ',color:'black'}
+					// ]
+					,
+					defaultPoint: {
+					  eventsClick: selecionarEstado,
+					  tooltip: 'Clique para ver detalhado %province'
+					},
+				}]
+			});
 }
 
 function loadGeral(){
@@ -151,11 +158,16 @@ function loadGeral(){
 
 	d3.json(pathGeral,function(data){
 
+		var widthL = $("#Q1").width();
+		var heightL = $("#Q1").height();
+
+
 		var maxCandidatos = 0;
 		// Tratamento dos dados
 		var escolaridades = [];
 		var racas = [];
 		var quantidade_candidatos = {};
+		var eleitos = [];
 		for(var estado in data){
 			// console.log(data[estado]);
 			var v = data[estado];
@@ -180,6 +192,9 @@ function loadGeral(){
 			});
 			racas = racas.concat(raca);
 
+			eleitos = eleitos.concat(v.turno1.eleitos_por_partido);
+			eleitos = eleitos.concat(v.turno2.eleitos_por_partido);
+
 			v.turno1.totalCassacoes = 0;
 			for(var cassacao = 0; cassacao < v.turno1.candidatos_por_cassacao.length ; cassacao = cassacao+1)
 				if(v.turno1.candidatos_por_cassacao[cassacao][0] != "normal")
@@ -201,7 +216,34 @@ function loadGeral(){
 		drawMap($('#mapa'),rankings['1']['candidatos'],6);
 		// console.log(partidosMaisEleitosPorEstadoT1);
 
+		var bar1 = dc.barChart("#bar1Q1");
+		bar1.ordering(function(d){ return - d.value});
 
+		var factsQ = crossfilter(eleitos);
+
+		var eleitosPartidosDim = factsQ.dimension(function(d){
+			return d[0];
+		});
+
+		var eleitosPartidosGroup = eleitosPartidosDim.group().reduceSum(function(d){
+			return d[1];
+		});
+		
+		var maxEleitos = (eleitosPartidosGroup.top(1)[0]).value;
+
+		// console.log(maxEleitos);
+		bar1.width(widthL)
+			.height(heightL*0.40)
+			.brushOn(false)
+			.y(d3.scale.linear().domain([0,maxEleitos+ (maxEleitos*0.09)]))
+			.margins({top: 50, right: 50, bottom: 25, left: 40})
+			.dimension(eleitosPartidosDim)
+			.group(eleitosPartidosGroup)
+			.x(d3.scale.ordinal())
+            .xUnits(dc.units.ordinal)
+            .xAxisLabel("Partido")
+            .renderLabel(true)
+            .yAxisLabel("Total de candidatos eleitos");
 		//Q2
 
 		//Definição de Gráficos e crossfilter
@@ -243,9 +285,6 @@ function loadGeral(){
 
 
 
-		
-		var widthL = $("#Q1").width();
-		var heightL = $("#Q1").height();
 
         
 		
@@ -296,7 +335,7 @@ function loadGeral(){
 				.slicesCap(6)
 				.innerRadius(0)
 				.dimension(escolaridadeDim)
-				.externalLabels(50)
+				.externalLabels(30)
 				.externalRadiusPadding(50)
           		.drawPaths(true)
 				.group(escolaridadeGroup)
@@ -337,10 +376,10 @@ function loadGeral(){
         //Condiguração gráficos
         pieG2.width(widthL)
 				.height(heightL*0.8)
-				.slicesCap(5)
+				.slicesCap(3)
 				.innerRadius(0)
 				.dimension(racaDim)
-				.externalLabels(50)
+				.externalLabels(30)
 				.externalRadiusPadding(50)
           		.drawPaths(true)
 				.group(racaGroup)
@@ -440,6 +479,19 @@ function loadGeral(){
 
 
 		dc.renderAll();
+
+		function AddXAxis(chartToUpdate, displayText){
+		    chartToUpdate.svg()
+		                .append("text")
+		                .attr("class", "x-axis-label")
+		                .attr("text-anchor", "middle")
+		                .attr("x", chartToUpdate.width()/2)
+		                .attr("y", chartToUpdate.height()-3.5)
+		                .text(displayText);
+		}
+		AddXAxis(row1, "Média de idade");
+		AddXAxis(row2, "Média de idade");
+		AddXAxis(row3, "Percentual de cassações");
 		closeLoad();
 	});
 	
