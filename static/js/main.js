@@ -11,7 +11,15 @@ function changeFilterMap(){
 	$("#legenda")[0].innerHTML = "";
 	drawMap($('#mapa'),rankings[turno][filtro],6);
 }
-
+function AddXAxis(chartToUpdate, displayText){
+    chartToUpdate.svg()
+                .append("text")
+                .attr("class", "x-axis-label")
+                .attr("text-anchor", "middle")
+                .attr("x", chartToUpdate.width()/2)
+                .attr("y", chartToUpdate.height()-3.5)
+                .text(displayText);
+}
 function clickFilter(el){
 	var df = $("#d"+el.id)[0];
 	if(df.style.display != "block")
@@ -480,15 +488,7 @@ function loadGeral(){
 
 		dc.renderAll();
 
-		function AddXAxis(chartToUpdate, displayText){
-		    chartToUpdate.svg()
-		                .append("text")
-		                .attr("class", "x-axis-label")
-		                .attr("text-anchor", "middle")
-		                .attr("x", chartToUpdate.width()/2)
-		                .attr("y", chartToUpdate.height()-3.5)
-		                .text(displayText);
-		}
+		
 		AddXAxis(row1, "Média de idade");
 		AddXAxis(row2, "Média de idade");
 		AddXAxis(row3, "Percentual de cassações");
@@ -543,6 +543,9 @@ function loadEstado(){
 			var select1 = dc.selectMenu("#select1");
 			// var pie1 = dc.pieChart("#pie1");
 			var select9 = dc.selectMenu("#select9");
+			var bar2 = dc.barChart("#bar2");
+			bar2.ordering(function(d){return -d.value});
+			var bar3 = dc.barChart("#bar3");
 			
 
 			var factsQ1 = crossfilter(data);
@@ -560,6 +563,14 @@ function loadEstado(){
 				return d.descricao_cargo;
 			});
 
+			var situacaoDim = factsQ1.dimension(function(d){
+				return d.desc_sit_tot_turno;
+			});
+
+
+			var idadeDim = factsQ1.dimension(function(d){
+				return d.idade_data_eleicao;
+			});
 
 
 			var sexoGroup = sexoDim.group().reduce(function(p,v){
@@ -583,14 +594,26 @@ function loadEstado(){
               };
           	}
 
+          	var soma1 = 0;
+          	for(var el in sexoGroup.top(2)[0].value){
+          		soma1 = soma1+sexoGroup.top(2)[0].value[el];
+          	}
+
+          	var soma2 = 0;
+          	for(var el in sexoGroup.top(2)[1].value){
+          		soma2 = soma2+sexoGroup.top(2)[1].value[el];
+          	}
+          	if(soma2 > soma1)
+          		soma1 = soma2;
 
 
 			//Condiguração gráficos
-			var width = $("#chartDiv1").width();
-			var height = $("#chartDiv1").height();
-			bar1.width(width*0.7)
-				.height(height)
+			var widthL = $("#chartDiv1").width();
+			var heightL = $("#chartDiv1").height();
+			bar1.width(widthL*0.50)
+				.height(heightL*0.45)
 				.margins({top: 20, right: 50, bottom: 25, left: 140})
+				.y(d3.scale.linear().domain([0,soma1+ (soma1*0.1)]))
 				.brushOn(false)
 				.dimension(sexoDim)
 				.group(sexoGroup,resultados[0],sel_stack(resultados[0]))
@@ -600,8 +623,7 @@ function loadEstado(){
                 // .y(d3.scale.linear().domain([0,maxCandidatos+ (maxCandidatos*0.05)]))
                 .xAxisLabel("Sexo")
                 .yAxisLabel("Total de candidatos")
-                .renderLabel(true)
-                .elasticY(true);
+                .renderLabel(true);
 
             bar1.legend(dc.legend());
             dc.override(bar1, 'legendables', function() {
@@ -612,23 +634,33 @@ function loadEstado(){
             	bar1.stack(sexoGroup, ''+resultados[i], sel_stack(resultados[i]));
             }
 
+            bar2.width(widthL*0.50)
+				.height(heightL*0.45)
+				.margins({top: 20, right: 50, bottom: 25, left: 50})
+                .y(d3.scale.linear().domain([0,situacaoDim.group().top(1)[0].value *1.1]))
+				.brushOn(false)
+				.dimension(situacaoDim)
+				.group(situacaoDim.group())
+				.x(d3.scale.ordinal())
+                .xUnits(dc.units.ordinal)
+                .xAxisLabel("Situação")
+                .yAxisLabel("Total de candidatos")
+                .renderLabel(true);
 
-    //         pie1.width(width*0.4)
-				// .height(height/2)
-				// .slicesCap(6)
-				// .innerRadius(0)
-				// .dimension(cargoDim)
-				// .externalLabels(50)
-				// .externalRadiusPadding(50)
-    //       		.drawPaths(true)
-				// .group(cargoDim.group())
-				// .legend(dc.legend())
-				// // workaround for #703: not enough data is accessible through .label() to display percentages
-				// .on('pretransition', function(chart) {
-				//     chart.selectAll('text.pie-slice').text(function(d) {
-				//         return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
-				//     })
-				// });
+             
+             
+             bar3.width(widthL)
+				.height(heightL*0.5)
+				.margins({top: 20, right: 50, bottom: 25, left: 50})
+				.brushOn(false)
+				.dimension(idadeDim)
+				.group(idadeDim.group())
+				.x(d3.scale.ordinal())
+                .xUnits(dc.units.ordinal)
+                .xAxisLabel("Idade na eleição")
+                .yAxisLabel("Total de candidatos")
+                .elasticY(true);
+
 
             select1.dimension(turnoDim)
 				.group(turnoDim.group())
@@ -688,8 +720,8 @@ function loadEstado(){
 			//Condiguração gráficos
 			
 			
-			scatter1.width(width)
-				.height(height)
+			scatter1.width(widthL)
+				.height(heightL*0.8)
 				.x(d3.scale.ordinal())
 				.xUnits(dc.units.ordinal)
 				.brushOn(false)
@@ -784,12 +816,12 @@ function loadEstado(){
 			});
 
 			//Condiguração gráficos
-			pie2.width(width)
-				.height(height)
-				.slicesCap(6)
+			pie2.width(widthL)
+				.height(heightL*0.8)
+				.slicesCap(5)
 				.innerRadius(0)
 				.dimension(racasSexoDim)
-				.externalLabels(50)
+				.externalLabels(40)
 				.externalRadiusPadding(50)
           		.drawPaths(true)
 				.group(racasSexoDim.group())
@@ -839,12 +871,12 @@ function loadEstado(){
 				return d.descricao_cargo;
 			});
 			//Condiguração gráficos
-			row4.width(width)
-			.height(height)
+			row4.width(widthL)
+			.height(heightL*0.8)
 			.dimension(partidoDim)
 			.group(cassacoesGroup)
 			.x(d3.scale.linear().domain(d3.extent(cassacoesGroup.all(),function(d){return d.value})))
-			.margins({top: 50, right: 50, bottom: 25, left: 40})
+			// .margins({top: 50, right: 50, bottom: 25, left: 40})
 			.title(function(d){
 				// return "candidatos:"++"\ncassados:"++"\npercentual de cassados:"+d.value;
 				
@@ -858,6 +890,7 @@ function loadEstado(){
 					.controlsUseVisibility(true);
 			//Render
 			dc.renderAll();
+			AddXAxis(row4, "Percentual de cassações");
 			closeLoad();
 		});
 	}

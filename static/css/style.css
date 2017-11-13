@@ -57,30 +57,32 @@ h2 span {
 #chartDiv1{
 	position:absolute;
 	top:0%;
-	left: 0px;
-	min-width: 100%;
-	min-height:100%;	
+	background-color: #9cfcc4;
+
+}
+#chartDiv1 h1{
+	margin: 0px 0px 0px 0px;
 }
 #chartDiv2{
 	position:absolute;
-	top:201%;
-	left: 0px;
-	min-width: 100%;
-	min-height:100%;	
+	top:100%;
+	background-color: #01496d;
+}
+#chartDiv2 svg{
+	background-color: white;	
+}
+#chartDiv2 h1{
+	color:white;
 }
 #chartDiv3{
 	position:absolute;
-	top:301%;
-	left: 0px;
-	min-width: 100%;
-	min-height:100%;	
+	top:200%;
+	background-color: #21cc90;
 }
 #chartDiv4{
 	position:absolute;
-	top:450%;
-	left: 0px;
-	min-width: 100%;
-	min-height:100%;	
+	top:300%;
+	background-color: #00cefc;
 }
 .color_legend{
 	float: left;
