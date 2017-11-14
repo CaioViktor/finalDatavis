@@ -120,7 +120,7 @@ h2 span {
 #Q2{
 	position: absolute;
 	top: 100%;
-	background-color: #f71b1b;
+	background-color: #ff9eff;
 	
 }
 #Q3{
@@ -144,13 +144,15 @@ h2 span {
 #Q6{
 	position: absolute;
 	top: 500%;
-	background-color: #332cf9;
+	background-color: #615cff;
 	
 }
 #Q7{
 	position: absolute;
 	top: 600%;
 	background-color: #ff4f75;
+	color: white;
+	fill:white !important;
 	
 }
 #gradient{
