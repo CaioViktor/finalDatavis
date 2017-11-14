@@ -765,7 +765,7 @@ function loadEstado(){
 					$("#legendaLinear b")[0].innerHTML = maxValue;
 					$("#legendaLinear b")[1].innerHTML = minValue;
 				});
-				console.log(scatter1);
+				
 
 				jQuery("<div/>",{
 					id:"legendaLinear"
@@ -870,6 +870,8 @@ function loadEstado(){
 			//Definição de Gráficos e crossfilter
 			var factsQ4 = crossfilter(data);
 			var row4 = dc.rowChart("#row4");
+			row4.ordering(function(d){return -(d.value / quantidade_candidatos[d.key])*100;})
+			var row5 = dc.rowChart("#row5");
 			var select10 = dc.selectMenu("#select10");
 			//Código
 			var partidoDim = factsQ4.dimension(function(d){
@@ -877,25 +879,58 @@ function loadEstado(){
 			});
 
 			var cassacoesGroup = partidoDim.group().reduceSum(function(d){
-				return (d.cassacao != "normal")/(quantidade_candidatos[d.sigla_partido] / 100);
+				// return (d.cassacao != "normal")/(quantidade_candidatos[d.sigla_partido] / 100);
+				if(d.cassacao == "normal")
+					return 0;
+				return 1;
 			});
 			
 
 			var cargoDim = factsQ4.dimension(function(d){
 				return d.descricao_cargo;
 			});
+
+			var cassacaoDim = factsQ4.dimension(function(d){
+				return d.cassacao;
+			});
+			
+			var cassacaoGroup = cassacaoDim.group().reduceSum(function(d){
+				
+				if(d.cassacao == "normal")
+					return -1;
+				return 1;
+			});
+
+			// console.log(cassacoesGroup);
+
 			//Condiguração gráficos
-			row4.width(widthL)
+			row4.width(widthL*0.5)
 			.height(heightL*0.8)
 			.dimension(partidoDim)
 			.group(cassacoesGroup)
-			.x(d3.scale.linear().domain(d3.extent(cassacoesGroup.all(),function(d){return d.value})))
+			.valueAccessor(function(d){
+				// console.log(d.key+":"+(d.value / quantidade_candidatos[d.key])*100);
+				return (d.value / quantidade_candidatos[d.key])*100;
+			})
+			.x(d3.scale.linear().domain(d3.extent(cassacoesGroup.all(),function(d){return (d.value / quantidade_candidatos[d.key])*100})))
+			// .x(d3.scale.linear().domain(d3.extent(cassacoesGroup.all(),function(d){return d.value})))
 			// .margins({top: 50, right: 50, bottom: 25, left: 40})
 			.title(function(d){
 				// return "candidatos:"++"\ncassados:"++"\npercentual de cassados:"+d.value;
 				
-				return "\nPercentual de cassações:"+(Math.round(d.value * 100)/100)+"%\nTotal de candidatos:"+quantidade_candidatos[d.key]+"\nTotal de cassações: "+Math.round(quantidade_candidatos[d.key]*(d.value/100));
+				return "\nPercentual de cassações:"+(Math.round(((d.value / quantidade_candidatos[d.key])*100)*100)/100)+"%\nTotal de candidatos:"+quantidade_candidatos[d.key]+"\nTotal de cassações: "+d.value;
 			})
+			.elasticX(true);
+
+			
+			row5.width(widthL*0.5)
+			.height(heightL*0.8)
+			.dimension(cassacaoDim)
+			.group(cassacaoGroup)
+			.data(function(d){return d.top(10)})
+			.x(d3.scale.linear().domain(d3.extent(cassacaoGroup.all(),function(d){return d.value})))
+			// .margins({top: 50, right: 50, bottom: 25, left: 40})
+			
 			.elasticX(true);
 			select10.dimension(cargoDim)
 					.group(cargoDim.group())
@@ -905,6 +940,7 @@ function loadEstado(){
 			//Render
 			dc.renderAll();
 			AddXAxis(row4, "Percentual de cassações");
+			AddXAxis(row5, "Total de cassações");
 			closeLoad();
 		});
 	}
