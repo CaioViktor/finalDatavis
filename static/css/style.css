@@ -80,6 +80,10 @@ h2 span {
 	top:200%;
 	background-color: #21cc90;
 }
+#chartDiv3 h1{
+	margin: 0px 0px 0px 0px;
+}
+
 #chartDiv4{
 	position:absolute;
 	top:300%;
@@ -129,6 +133,7 @@ h2 span {
 	background-color: #ffeb0f;
 	
 }
+
 #Q4{
 	position: absolute;
 	top: 300%;
@@ -189,6 +194,10 @@ h2 span {
 	top: 0%;
 	right: 0%;
 	text-align: center;
+	margin-top: 20px;
+	margin-right:20px;
+}
+#Q1 .filtro_buttom{
 	margin-top: 100px;
 	margin-right:100px;
 }
@@ -213,12 +222,16 @@ h2 span {
 	width: auto;
 	min-height: 50%;
 	position: absolute;
-	top: 100px;
 	right: 0%;
-	margin-right: 100px;
+	top: 20px;
+	margin-right: 20px;
 	background: rgba(255, 255, 255, 0.5);
 	padding: 5px 30px 5px 5px;
 
+}
+#Q1 .filtro{
+	top: 100px;
+	margin-right: 100px;
 }
 
 g text{

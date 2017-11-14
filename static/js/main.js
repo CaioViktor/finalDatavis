@@ -826,45 +826,119 @@ function loadEstado(){
 
 			//Chart 3
 			//Definição de Gráficos e crossfilter
-			
+			// var pie3 = dc.pieChart("#pie3");
 			var select6 = dc.selectMenu("#select6");
-			var select7 = dc.selectMenu("#select7");
-			var select8 = dc.selectMenu("#select8");
+			var row6 = dc.rowChart("#row6");
+			var row7 = dc.rowChart("#row7");
+			var row8 = dc.rowChart("#row8");
+			var row9 = dc.rowChart("#row9");
+
 
 			var factsQ3 = crossfilter(data);
 			//Código
-
+			var partidoDim = factsQ3.dimension(function(d){
+				return d.sigla_partido;
+			});
 			
+			var votosPartidoGroup = partidoDim.group().reduceSum(function(d){
+				return d.votos;
+			});
+
+			var eleitosPartidoGroup = partidoDim.group().reduceSum(function(d){
+				return (d.desc_sit_tot_turno == 'ELEITO POR MÉDIA' || d.desc_sit_tot_turno == 'ELEITO POR QP' || d.desc_sit_tot_turno == 'ELEITO');
+			});
+
 
 			var cargoDim = factsQ3.dimension(function(d){
 				return d.descricao_cargo;
 			});
-			var partidosDim = factsQ3.dimension(function(d){
-				return d.sigla_partido;
+
+			var turnoDim = factsQ3.dimension(function(d){
+				return d.num_turno;
 			});
-			var eleitosDim = factsQ3.dimension(function(d){
-				if(d.desc_sit_tot_turno == 'ELEITO POR MÉDIA' || d.desc_sit_tot_turno == 'ELEITO POR QP' || d.desc_sit_tot_turno == 'ELEITO')
-					return 'ELEITO';
-				return d.desc_sit_tot_turno;
+
+
+			var legendaDim = factsQ3.dimension(function(d){
+				return d.composicao_legenda;
 			});
+			
+			var votosLegendaGroup = legendaDim.group().reduceSum(function(d){
+				return d.votos;
+			});
+
+			var eleitosLegendaGroup = legendaDim.group().reduceSum(function(d){
+				return (d.desc_sit_tot_turno == 'ELEITO POR MÉDIA' || d.desc_sit_tot_turno == 'ELEITO POR QP' || d.desc_sit_tot_turno == 'ELEITO');
+			});
+			// function multivalue_filter(values) {
+			//     return function(v) {
+			//         return values.indexOf(v) != -1;
+			//     };
+			// }
 
 			//Condiguração gráficos
+
+			row6.width(widthL*0.5)
+			.height(heightL*0.45)
+			.dimension(partidoDim)
+			.group(votosPartidoGroup)
+			.data(function(d){return d.top(10)})
+			.x(d3.scale.linear().domain(d3.extent(votosPartidoGroup.all(),function(d){return d.value})))
+			.elasticX(true);
 			
+
+			row7.width(widthL*0.5)
+			.height(heightL*0.45)
+			.dimension(partidoDim)
+			.group(eleitosPartidoGroup)
+			.data(function(d){return d.top(10)})
+			.x(d3.scale.linear().domain(d3.extent(eleitosPartidoGroup.all(),function(d){return d.value})))	
+			.elasticX(true);
+			
+
+			row8.width(widthL*0.5)
+			.height(heightL*0.45)
+			.dimension(legendaDim)
+			.group(votosLegendaGroup)
+			.data(function(d){return d.top(10)})
+			.x(d3.scale.linear().domain(d3.extent(votosLegendaGroup.all(),function(d){return d.value})))
+			.elasticX(true);
+			
+
+			row9.width(widthL*0.5)
+			.height(heightL*0.45)
+			.dimension(legendaDim)
+			.group(eleitosLegendaGroup)
+			.data(function(d){return d.top(10)})
+			.x(d3.scale.linear().domain(d3.extent(eleitosLegendaGroup.all(),function(d){return d.value})))
+			.elasticX(true);
+			
+
+			// pie3.width(widthL*0.4)
+			// 	.height(heightL*0.8)
+			// 	.slicesCap(3)
+			// 	.innerRadius(0)
+			// 	.dimension(percentualDim)
+			// 	.externalLabels(0)
+			// 	.externalRadiusPadding(50)
+   //        		.drawPaths(true)
+			// 	.group(percentualDim.group())
+			// 	.legend(dc.legend())
+			// 	// workaround for #703: not enough data is accessible through .label() to display percentages
+			// 	.on('pretransition', function(chart) {
+			// 	    chart.selectAll('text.pie-slice').text(function(d) {
+			// 	        return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+			// 	    })
+			// 	});
 			select6.dimension(cargoDim)
 					.group(cargoDim.group())
-					.multiple(true)
-					.numberVisible(10)
-					.controlsUseVisibility(true);
-			select7.dimension(partidosDim)
-					.group(partidosDim.group())
-					.multiple(true)
-					.numberVisible(10)
+					.multiple(false)
+					.numberVisible(1)
 					.controlsUseVisibility(true);
 
-			select8.dimension(eleitosDim)
-				.group(eleitosDim.group())
-				.controlsUseVisibility(true);
 
+			// eleitosDim.filterFunction(multivalue_filter(["ELEITO POR MÉDIA","ELEITO POR QP","ELEITO"]));
+			// console.log(eleitosDim);
+			turnoDim.filter("1");
 
 			//Chart 4
 			//Definição de Gráficos e crossfilter
@@ -941,6 +1015,10 @@ function loadEstado(){
 			dc.renderAll();
 			AddXAxis(row4, "Percentual de cassações");
 			AddXAxis(row5, "Total de cassações");
+			AddXAxis(row6, "Total de votos");
+			AddXAxis(row7, "Total de eleitos");
+			AddXAxis(row8, "Total de votos");
+			AddXAxis(row9, "Total de eleitos");
 			closeLoad();
 		});
 	}
