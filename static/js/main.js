@@ -685,6 +685,8 @@ function loadEstado(){
 			var select2 = dc.selectMenu("#select2");
 			var select3 = dc.selectMenu("#select3");
 			var select4 = dc.selectMenu("#select4");
+			var pie2 = dc.pieChart("#pie2");
+			var select5 = dc.selectMenu("#select5");
 
 			var factsQ2 = crossfilter(data);
 			// console.log(factsQ2);
@@ -717,16 +719,27 @@ function loadEstado(){
    //                .range(colorbrewer.Greens[6]);
    			var minValue = geralGroup.top(geralGroup.size())[geralGroup.size()-1].value;
    			var maxValue = geralGroup.top(1)[0].value;
+
+   			var racasSexoDim = factsQ2.dimension(function(d){
+				return [d.descricao_sexo,d.descricao_cor_raca];
+			});
+
+			var turnoDim = factsQ2.dimension(function(d){
+				return d.num_turno;
+			});
+
 			//Condiguração gráficos
 			
 			
-			scatter1.width(widthL)
-				.height(heightL*0.8)
+			scatter1.width(widthL*0.6)
+				.height(heightL*0.85)
+				.margins({top: 20, right: 20, bottom: 120, left: 50})
 				.x(d3.scale.ordinal())
 				.xUnits(dc.units.ordinal)
 				.brushOn(false)
 				.symbolSize(8)
 				.elasticY(true)
+				._rangeBandPadding(1)
 				.clipPadding(10)
 				.yAxisLabel("Idade")
 				.dimension(candidatoDim)
@@ -741,13 +754,19 @@ function loadEstado(){
 					    )
 				.group(geralGroup)
 				.on('preRedraw', function() {
+					minValue = geralGroup.top(geralGroup.size())[geralGroup.size()-1].value;
+					maxValue = geralGroup.top(1)[0].value;
 					scatter1.colors(
 						d3.scale.linear().domain([minValue,maxValue])
 					      // .interpolate(d3.interpolateHcl)
-					      .range([color, color.darker(4)])
+					     		.range([color, color.darker(4)])
 					 // quantize
-					)
+					);
+					$("#legendaLinear b")[0].innerHTML = maxValue;
+					$("#legendaLinear b")[1].innerHTML = minValue;
 				});
+				console.log(scatter1);
+
 				jQuery("<div/>",{
 					id:"legendaLinear"
 
@@ -782,46 +801,12 @@ function loadEstado(){
 				.group(eleitosDim.group())
 				.controlsUseVisibility(true);
 
-
-
-			//Chart 3
-			//Definição de Gráficos e crossfilter
-			var pie2 = dc.pieChart("#pie2");
-			var select5 = dc.selectMenu("#select5");
-			var select6 = dc.selectMenu("#select6");
-			var select7 = dc.selectMenu("#select7");
-			var select8 = dc.selectMenu("#select8");
-
-			var factsQ3 = crossfilter(data);
-			//Código
-
-			var racasSexoDim = factsQ3.dimension(function(d){
-				return [d.descricao_sexo,d.descricao_cor_raca];
-			});
-
-			var turnoDim = factsQ3.dimension(function(d){
-				return d.num_turno;
-			});
-
-			var cargoDim = factsQ3.dimension(function(d){
-				return d.descricao_cargo;
-			});
-			var partidosDim = factsQ3.dimension(function(d){
-				return d.sigla_partido;
-			});
-			var eleitosDim = factsQ3.dimension(function(d){
-				if(d.desc_sit_tot_turno == 'ELEITO POR MÉDIA' || d.desc_sit_tot_turno == 'ELEITO POR QP' || d.desc_sit_tot_turno == 'ELEITO')
-					return 'ELEITO';
-				return d.desc_sit_tot_turno;
-			});
-
-			//Condiguração gráficos
-			pie2.width(widthL)
+			pie2.width(widthL*0.4)
 				.height(heightL*0.8)
 				.slicesCap(5)
 				.innerRadius(0)
 				.dimension(racasSexoDim)
-				.externalLabels(40)
+				.externalLabels(0)
 				.externalRadiusPadding(50)
           		.drawPaths(true)
 				.group(racasSexoDim.group())
@@ -836,6 +821,35 @@ function loadEstado(){
 			select5.dimension(turnoDim)
 					.group(turnoDim.group())
 					.controlsUseVisibility(true);
+
+
+
+			//Chart 3
+			//Definição de Gráficos e crossfilter
+			
+			var select6 = dc.selectMenu("#select6");
+			var select7 = dc.selectMenu("#select7");
+			var select8 = dc.selectMenu("#select8");
+
+			var factsQ3 = crossfilter(data);
+			//Código
+
+			
+
+			var cargoDim = factsQ3.dimension(function(d){
+				return d.descricao_cargo;
+			});
+			var partidosDim = factsQ3.dimension(function(d){
+				return d.sigla_partido;
+			});
+			var eleitosDim = factsQ3.dimension(function(d){
+				if(d.desc_sit_tot_turno == 'ELEITO POR MÉDIA' || d.desc_sit_tot_turno == 'ELEITO POR QP' || d.desc_sit_tot_turno == 'ELEITO')
+					return 'ELEITO';
+				return d.desc_sit_tot_turno;
+			});
+
+			//Condiguração gráficos
+			
 			select6.dimension(cargoDim)
 					.group(cargoDim.group())
 					.multiple(true)

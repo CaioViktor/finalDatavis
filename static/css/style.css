@@ -66,14 +66,15 @@ h2 span {
 #chartDiv2{
 	position:absolute;
 	top:100%;
-	background-color: #01496d;
-}
-#chartDiv2 svg{
+	/*background-color: #01496d;*/
 	background-color: white;	
 }
-#chartDiv2 h1{
+/*#chartDiv2 svg{
+	background-color: white;	
+}*/
+/*#chartDiv2 h1{
 	color:white;
-}
+}*/
 #chartDiv3{
 	position:absolute;
 	top:200%;
@@ -220,4 +221,9 @@ h2 span {
 
 g text{
 	fill:black !important;
+}
+
+#scatter1 .x.axis text {
+    text-anchor: end !important;
+    transform: rotate(-30deg);
 }
