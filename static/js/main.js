@@ -28,6 +28,27 @@ function clickFilter(el){
 		df.style.display = "none";
 }
 
+function getCurrentVis(){
+	var currentePosition = window.pageYOffset;
+	var heightPage = $("#load").height();
+	var div = Math.floor(currentePosition/heightPage);
+	return div;
+}
+
+function back(){
+	var vis = getCurrentVis();
+	var charts = $(".chart");
+	var prox = charts.length % (vis+1);
+	var proxId = charts[prox].id;
+	alert(proxId);
+}
+function next(){
+	var vis = getCurrentVis();
+	var charts = $(".chart");
+	
+	alert(vis);
+}
+
 function pathEstado(estado){
 	return pathData+estado+"/data.csv"
 }
