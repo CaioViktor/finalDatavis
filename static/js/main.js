@@ -42,14 +42,14 @@ function back(){
 	if(prox < 0)
 		prox = charts.length - 1;
 	var proxId = charts[prox].id;
-	window.location=window.location.origin+window.location.pathname+"#"+proxId;
+	window.location=window.location.origin+window.location.pathname+window.location.search+"#"+proxId;
 }
 function next(){
 	var vis = getCurrentVis();
 	var charts = $(".chart");
 	var prox = (vis+1) % charts.length;
 	var proxId = charts[prox].id;
-	window.location=window.location.origin+window.location.pathname+"#"+proxId;
+	window.location=window.location.origin+window.location.pathname+window.location.search+"#"+proxId;
 }
 
 function pathEstado(estado){
