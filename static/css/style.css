@@ -61,7 +61,7 @@ h2 span {
 #chartDiv1{
 	position:absolute;
 	top:0%;
-	background-color: #9cfcc4;
+	background-color: #f4f4f4;
 
 }
 #chartDiv1 h1{
@@ -82,7 +82,7 @@ h2 span {
 #chartDiv3{
 	position:absolute;
 	top:200%;
-	background-color: #21cc90;
+	background-color: #f4f4f4;
 }
 #chartDiv3 h1{
 	margin: 0px 0px 0px 0px;
@@ -91,7 +91,7 @@ h2 span {
 #chartDiv4{
 	position:absolute;
 	top:300%;
-	background-color: #00cefc;
+	background-color: #fff;
 }
 .color_legend{
 	float: left;
@@ -128,38 +128,38 @@ h2 span {
 #Q2{
 	position: absolute;
 	top: 100%;
-	background-color: #ff9eff;
+	background-color: #f4f4f4;
 	
 }
 #Q3{
 	position: absolute;
 	top: 200%;
-	background-color: #ffeb0f;
+	background-color: #fff;
 	
 }
 
 #Q4{
 	position: absolute;
 	top: 300%;
-	background-color: #21cc90;
+	background-color: #f4f4f4;
 	
 }
 #Q5{
 	position: absolute;
 	top: 400%;
-	background-color: #00cefc;
+	background-color: #fff;
 	
 }
 #Q6{
 	position: absolute;
 	top: 500%;
-	background-color: #615cff;
+	background-color: #f4f4f4;
 	
 }
 #Q7{
 	position: absolute;
 	top: 600%;
-	background-color: #ff4f75;
+	background-color: #fff;
 	color: white;
 	fill:white !important;
 	
