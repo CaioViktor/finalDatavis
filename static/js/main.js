@@ -516,7 +516,7 @@ function loadGeral(){
 		AddXAxis(row1, "Média de idade");
 		AddXAxis(row2, "Média de idade");
 		AddXAxis(row3, "Percentual de cassações");
-		closeLoad();
+		// closeLoad();
 	});
 	
 }
@@ -1043,7 +1043,7 @@ function loadEstado(){
 			AddXAxis(row7, "Total de eleitos");
 			AddXAxis(row8, "Total de votos");
 			AddXAxis(row9, "Total de eleitos");
-			closeLoad();
+			// closeLoad();
 		});
 	}
 }

@@ -24,6 +24,7 @@ h2 span {
 	display: none;
 }
 #load{
+	display: none;
 	position:absolute;
 	top:0px;
 	left:0px;
@@ -38,6 +39,7 @@ h2 span {
     text-align: center;
     justify-content: center;
     pointer-events:none
+
 }
 #load img{
 	position:absolute;
