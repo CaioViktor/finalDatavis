@@ -83,7 +83,9 @@ function selecionarEstado(){
 		return null;
 	window.location= window.location.origin + window.location.pathname+"estado.html?q="+estado;
 }
-
+function home(){
+	window.location= window.location.origin;	
+}
 function orderAscending(lista){
 	lista.sort(function(a,b){
 		return b[1] - a[1];

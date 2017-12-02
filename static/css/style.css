@@ -204,6 +204,12 @@ h2 span {
 	bottom: 0%;
 	right: 0%;
 	margin-bottom: 20px;
+	opacity: 0.6;
+    filter: alpha(opacity=60); /* For IE8 and earlier */
+}
+.controls:hover{
+	opacity: 1;
+    filter: alpha(opacity=100); /* For IE8 and earlier */	
 }
 .buttom_control img{
 	padding-top: 5px;
