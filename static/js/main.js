@@ -2,7 +2,17 @@ var estadosValidos = ['AC','AL','AM','AP','BA','CE','ES','GO','MA','MG','MS','MT
 var pathData = "static/data/"
 var pathGeral = pathData+"geral.json"
 var rankings = {'1':{},'2':{}};
+var drawLabels;
 
+$(document).keydown(function(event){
+	var key = event.which;
+	if(key>=37 && key <= 40)
+		event.preventDefault();
+	if(key == 37 || key == 38)
+		back();
+	if(key == 39 || key == 40)
+		next();
+});
 
 
 function changeFilterMap(){
@@ -43,6 +53,8 @@ function back(){
 		prox = charts.length - 1;
 	var proxId = charts[prox].id;
 	window.location=window.location.origin+window.location.pathname+window.location.search+"#"+proxId;
+	dc.renderAll();
+	drawLabels();
 }
 function next(){
 	var vis = getCurrentVis();
@@ -50,6 +62,8 @@ function next(){
 	var prox = (vis+1) % charts.length;
 	var proxId = charts[prox].id;
 	window.location=window.location.origin+window.location.pathname+window.location.search+"#"+proxId;
+	dc.renderAll();
+	drawLabels();
 }
 
 function pathEstado(estado){
@@ -568,10 +582,12 @@ function loadGeral(){
 
 		dc.renderAll();
 
+		drawLabels = function(){
+			AddXAxis(row1, "Média de idade");
+			AddXAxis(row2, "Média de idade eleitos");
+			AddXAxis(row3, "Percentual de cassações");	
+		}
 		
-		AddXAxis(row1, "Média de idade");
-		AddXAxis(row2, "Média de idade eleitos");
-		AddXAxis(row3, "Percentual de cassações");
 		row1.elasticX(false);
 		row2.elasticX(false);
 		// closeLoad();
@@ -1104,12 +1120,14 @@ function loadEstado(){
 					.controlsUseVisibility(true);
 			//Render
 			dc.renderAll();
-			AddXAxis(row4, "Percentual de cassações");
-			AddXAxis(row5, "Total de cassações");
-			AddXAxis(row6, "Total de votos");
-			AddXAxis(row7, "Total de eleitos");
-			AddXAxis(row8, "Total de votos");
-			AddXAxis(row9, "Total de eleitos");
+			drawLabels = function(){
+				AddXAxis(row4, "Percentual de cassações");
+				AddXAxis(row5, "Total de cassações");
+				AddXAxis(row6, "Total de votos");
+				AddXAxis(row7, "Total de eleitos");
+				AddXAxis(row8, "Total de votos");
+				AddXAxis(row9, "Total de eleitos");
+			}
 			// closeLoad();
 		});
 	}
