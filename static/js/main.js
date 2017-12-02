@@ -84,7 +84,8 @@ function selecionarEstado(){
 	window.location= window.location.origin + window.location.pathname+"estado.html?q="+estado;
 }
 function home(){
-	window.location= window.location.origin;	
+	var path = window.location.pathname.split("/")
+	window.location= window.location.origin+"/"+path[path.length - 2];	
 }
 function orderAscending(lista){
 	lista.sort(function(a,b){
