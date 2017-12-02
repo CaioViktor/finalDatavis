@@ -232,7 +232,7 @@ function loadGeral(){
 				if(v.turno1.candidatos_por_cassacao[cassacao][0] != "normal")
 					v.turno1.totalCassacoes = v.turno1.totalCassacoes + v.turno1.candidatos_por_cassacao[cassacao][1];
 			v.turno1.percentualCassacoes = Math.round((v.turno1.totalCassacoes/v.turno1.quantidade) * 10000)/100;
-			quantidade_candidatos[v.estado] = [v.turno1.totalCassacoes,v.turno1.quantidade]
+			quantidade_candidatos[v.estado] = [v.turno1.totalCassacoes,v.turno1.quantidade];
 		}
 		// console.log(data);
 		
@@ -456,15 +456,13 @@ function loadGeral(){
 
 
 
-		//Q6
+		//Q5 Cont
 		//Definição de Gráficos e crossfilter
-		
-		var factsG6 = factsG5;
 		var row2 = dc.rowChart("#row2");
 		row2.ordering(function(d){return -d.value});
 
 		//Código
-		var idadeDimG6 = factsG6.dimension(function(d){
+		var idadeDimG6 = factsG5.dimension(function(d){
 			return d.estado;
 		});
 		var idadeGroupG6 = idadeDimG6.group().reduceSum(function(d){
@@ -480,10 +478,67 @@ function loadGeral(){
 			.margins({top: 0, right: 35, bottom: 35, left: 35})
 			.elasticX(true);
 
+		//Q6
+		//Definição de Gráficos e crossfilter
+		var factsG6 = crossfilter(data);
+		var bubble = dc.bubbleChart("#bubble");
+		//Código
+		var bubbleDim = factsG6.dimension(function(d){
+			return d.estado;
+		})
+		var bubbleGroup = bubbleDim.group().reduce(
+			function(p,v){
+				p.estado= v.estado;
+				p.candidatos= v.turno1.quantidade;
+				p.percental_cassacoes= v.turno1.percentualCassacoes;
+				p.idade_media_eleito= v.turno1.idade_media_eleito;
+				return p;
+			},
+			function(p,v){
+				delete p[v.estado];
+				return p;
+			},
+			function(){
+				return {}
+			}
+
+		);
+
+		//Condiguração gráficos
+		bubble.width(widthL)
+			.height(heightL*0.9)
+			.margins({top: 10, right: 50, bottom: 35, left: 40})
+			.dimension(bubbleDim)
+			.group(bubbleGroup)
+			.renderHorizontalGridLines(true)
+			.renderVerticalGridLines(true)
+			.maxBubbleRelativeSize(0.1)
+			.title(function(d){
+				return d.key+"\nQuantidade candidatos: "+d.value.candidatos+"\nPercentual de cassações: "+d.value.percental_cassacoes+"%\nIdade média de eleitos: "+d.value.idade_media_eleito;
+			})
+			.keyAccessor(function(d){
+				return d.value.idade_media_eleito;
+			})
+			.valueAccessor(function(d){
+				return d.value.percental_cassacoes;
+			})
+			.radiusValueAccessor(function (d) {
+	            return d.value.candidatos/10000;
+	            // return 8;
+	        })
+	        .x(d3.scale.linear().domain([40, 47]))
+	        .y(d3.scale.linear().domain([0, 20]))
+	        .r(d3.scale.linear().domain([0, 100]))
+	        .xAxisLabel('Idade média eleitos')
+	        .yAxisLabel('Cassações %')
+	        .yAxis().tickFormat(function (v) {
+	            return v + '%';
+	        });
+
+
 
 		//Q7
 		//Definição de Gráficos e crossfilter
-		
 		var factsG7 = crossfilter(data);
 		var row3 = dc.rowChart("#row3");
 		row3.ordering(function(d){return -d.value});
@@ -517,6 +572,8 @@ function loadGeral(){
 		AddXAxis(row1, "Média de idade");
 		AddXAxis(row2, "Média de idade eleitos");
 		AddXAxis(row3, "Percentual de cassações");
+		row1.elasticX(false);
+		row2.elasticX(false);
 		// closeLoad();
 	});
 	
@@ -1057,4 +1114,3 @@ function loadEstado(){
 		});
 	}
 }
-
