@@ -268,7 +268,7 @@ function loadGeral(){
 			.height(heightL*0.40)
 			.brushOn(false)
 			.y(d3.scale.linear().domain([0,maxEleitos+ (maxEleitos*0.09)]))
-			.margins({top: 50, right: 50, bottom: 25, left: 40})
+			.margins({top: 45, right: 50, bottom: 30, left: 40})
 			.dimension(eleitosPartidosDim)
 			.group(eleitosPartidosGroup)
 			.x(d3.scale.ordinal())
@@ -324,7 +324,7 @@ function loadGeral(){
 			.height(heightL*0.8)
 			.brushOn(false)
 			.y(d3.scale.linear().domain([0,maxCandidatos+ (maxCandidatos*0.05)]))
-			.margins({top: 50, right: 50, bottom: 25, left: 40})
+			.margins({top: 50, right: 50, bottom: 35, left: 40})
 			.dimension(candidatosDim)
 			.group(candidatosGroup,sexos[0],sel_stack(sexos[0]))
 			.title(function(d) {return d.key + '[' + this.layer + ']: ' + d.value[this.layer]+"\n"+(100*(d.value[this.layer])/(d.value.MASCULINO+d.value.FEMININO))+"%";})
@@ -445,12 +445,13 @@ function loadGeral(){
 			return d.turno1.idade_media;
 		})
 		//Condiguração gráficos
-		row1.width(widthL)
+		row1.width(widthL*0.5)
 			.height(heightL*0.8)
 			.dimension(idadeDim)
 			.group(idadeGroup)
 			.x(d3.scale.linear().domain(d3.extent(data,function(d){return d.turno1.idade_media})))
 			// .margins({top: 50, right: 50, bottom: 25, left: 40})
+			.margins({top: 0, right: 35, bottom: 35, left: 35})
 			.elasticX(true);
 
 
@@ -458,7 +459,7 @@ function loadGeral(){
 		//Q6
 		//Definição de Gráficos e crossfilter
 		
-		var factsG6 = crossfilter(data);
+		var factsG6 = factsG5;
 		var row2 = dc.rowChart("#row2");
 		row2.ordering(function(d){return -d.value});
 
@@ -471,12 +472,12 @@ function loadGeral(){
 		})
 		
 		//Condiguração gráficos
-		row2.width(widthL)
+		row2.width(widthL*0.5)
 			.height(heightL*0.8)
 			.dimension(idadeDimG6)
 			.group(idadeGroupG6)
 			.x(d3.scale.linear().domain(d3.extent(data,function(d){return d.turno1.idade_media_eleito})))
-			// .margins({top: 50, right: 50, bottom: 25, left: 40})
+			.margins({top: 0, right: 35, bottom: 35, left: 35})
 			.elasticX(true);
 
 
@@ -501,7 +502,7 @@ function loadGeral(){
 			.dimension(percentualCassacoesDim)
 			.group(percentualCassacoesGroup)
 			.x(d3.scale.linear().domain(d3.extent(data,function(d){return d.turno1.percentualCassacoes})))
-			// .margins({top: 50, right: 50, bottom: 25, left: 40})
+			.margins({top: 0, right: 35, bottom: 35, left: 35})
 			.title(function(d){
 				// return "candidatos:"++"\ncassados:"++"\npercentual de cassados:"+d.value;
 				
@@ -514,7 +515,7 @@ function loadGeral(){
 
 		
 		AddXAxis(row1, "Média de idade");
-		AddXAxis(row2, "Média de idade");
+		AddXAxis(row2, "Média de idade eleitos");
 		AddXAxis(row3, "Percentual de cassações");
 		// closeLoad();
 	});
@@ -636,7 +637,7 @@ function loadEstado(){
 			var heightL = $("#chartDiv1").height();
 			bar1.width(widthL*0.50)
 				.height(heightL*0.45)
-				.margins({top: 20, right: 50, bottom: 25, left: 140})
+				.margins({top: 20, right: 50, bottom: 25, left: 170})
 				.y(d3.scale.linear().domain([0,soma1+ (soma1*0.1)]))
 				.brushOn(false)
 				.dimension(sexoDim)
@@ -649,7 +650,7 @@ function loadEstado(){
                 .yAxisLabel("Total de candidatos")
                 .renderLabel(true);
 
-            bar1.legend(dc.legend());
+            bar1.legend(dc.legend().x(20).y(5).itemHeight(13).gap(5));
             dc.override(bar1, 'legendables', function() {
 	              var items = bar1._legendables();
 	              return items.reverse();
@@ -660,7 +661,7 @@ function loadEstado(){
 
             bar2.width(widthL*0.50)
 				.height(heightL*0.45)
-				.margins({top: 20, right: 50, bottom: 25, left: 50})
+				.margins({top: 20, right: 50, bottom: 35, left: 50})
                 .y(d3.scale.linear().domain([0,situacaoDim.group().top(1)[0].value *1.1]))
 				.brushOn(false)
 				.dimension(situacaoDim)
@@ -674,8 +675,8 @@ function loadEstado(){
              
              
              bar3.width(widthL)
-				.height(heightL*0.5)
-				.margins({top: 20, right: 50, bottom: 25, left: 50})
+				.height(heightL*0.47)
+				.margins({top: 20, right: 50, bottom: 35, left: 40})
 				.brushOn(false)
 				.dimension(idadeDim)
 				.group(idadeDim.group())
@@ -907,11 +908,13 @@ function loadEstado(){
 			.group(votosPartidoGroup)
 			.data(function(d){return d.top(10)})
 			.x(d3.scale.linear().domain(d3.extent(votosPartidoGroup.all(),function(d){return d.value})))
+			.margins({top: 0, right: 35, bottom: 35, left: 35})
 			.elasticX(true);
 			
 
 			row7.width(widthL*0.5)
 			.height(heightL*0.45)
+			.margins({top: 0, right: 35, bottom: 35, left: 35})
 			.dimension(partidoDim)
 			.group(eleitosPartidoGroup)
 			.data(function(d){return d.top(10)})
@@ -921,6 +924,7 @@ function loadEstado(){
 
 			row8.width(widthL*0.5)
 			.height(heightL*0.45)
+			.margins({top: 0, right: 35, bottom: 35, left: 35})
 			.dimension(legendaDim)
 			.group(votosLegendaGroup)
 			.data(function(d){return d.top(10)})
@@ -930,6 +934,7 @@ function loadEstado(){
 
 			row9.width(widthL*0.5)
 			.height(heightL*0.45)
+			.margins({top: 0, right: 35, bottom: 35, left: 35})
 			.dimension(legendaDim)
 			.group(eleitosLegendaGroup)
 			.data(function(d){return d.top(10)})
@@ -972,6 +977,9 @@ function loadEstado(){
 			var row5 = dc.rowChart("#row5");
 			var select10 = dc.selectMenu("#select10");
 			//Código
+		
+
+
 			var partidoDim = factsQ4.dimension(function(d){
 				return d.sigla_partido;
 			});
@@ -995,7 +1003,7 @@ function loadEstado(){
 			var cassacaoGroup = cassacaoDim.group().reduceSum(function(d){
 				
 				if(d.cassacao == "normal")
-					return -1;
+					return 0;
 				return 1;
 			});
 
@@ -1006,6 +1014,7 @@ function loadEstado(){
 			.height(heightL*0.8)
 			.dimension(partidoDim)
 			.group(cassacoesGroup)
+			.margins({top: 0, right: 35, bottom: 35, left: 35})
 			.valueAccessor(function(d){
 				// console.log(d.key+":"+(d.value / quantidade_candidatos[d.key])*100);
 				return (d.value / quantidade_candidatos[d.key])*100;
@@ -1025,6 +1034,7 @@ function loadEstado(){
 			.height(heightL*0.8)
 			.dimension(cassacaoDim)
 			.group(cassacaoGroup)
+			.margins({top: 0, right: 35, bottom: 35, left: 35})
 			.data(function(d){return d.top(10)})
 			.x(d3.scale.linear().domain(d3.extent(cassacaoGroup.all(),function(d){return d.value})))
 			// .margins({top: 50, right: 50, bottom: 25, left: 40})

@@ -162,8 +162,8 @@ h2 span {
 	position: absolute;
 	top: 600%;
 	background-color: #fff;
-	color: white;
-	fill:white !important;
+	/*color: white;*/
+	/*fill:white !important;*/
 	
 }
 #gradient{
@@ -276,3 +276,9 @@ g text{
     text-anchor: end !important;
     transform: rotate(-30deg);
 }
+/*
+#bar2 .x.axis text {
+    text-anchor: end !important;
+    transform: rotate(-10deg);
+
+}*/
