@@ -1,3 +1,16 @@
+.reset{
+	position:absolute;
+	bottom:0%;
+	left:0%;
+	z-index: 1000;
+	moz-border-radius: 8px 8px 8px 8px;
+	-webkit-border-radius: 8px 8px 8px 8px;
+	moz-box-shadow:2px 2px 5px #000000;
+	-webkit-box-shadow:2px 2px 5px #000000;
+	background-color: #fc4137;
+	color: white;
+	padding: 2px 2px 2px 2px;
+}
 @media print {
 	body {-webkit-print-color-adjust: exact;}
 }
