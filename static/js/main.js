@@ -865,7 +865,7 @@ function loadEstado(){
 			}
 			
 			scatter1.width(widthL*0.6)
-				.height(heightL*0.85)
+				.height(heightL*0.83)
 				.margins({top: 20, right: 20, bottom: 120, left: 50})
 				.x(d3.scale.ordinal())
 				.xUnits(dc.units.ordinal)
@@ -1010,7 +1010,7 @@ function loadEstado(){
 			//Condiguração gráficos
 
 			row6.width(widthL*0.5)
-			.height(heightL*0.45)
+			.height(heightL*0.40)
 			.dimension(partidoDim)
 			.group(votosPartidoGroup)
 			.data(function(d){return d.top(10)})
@@ -1020,7 +1020,7 @@ function loadEstado(){
 			
 
 			row7.width(widthL*0.5)
-			.height(heightL*0.45)
+			.height(heightL*0.40)
 			.margins({top: 0, right: 35, bottom: 35, left: 35})
 			.dimension(partidoDim)
 			.group(eleitosPartidoGroup)
@@ -1030,7 +1030,7 @@ function loadEstado(){
 			
 
 			row8.width(widthL*0.5)
-			.height(heightL*0.45)
+			.height(heightL*0.40)
 			.margins({top: 0, right: 35, bottom: 35, left: 35})
 			.dimension(legendaDim)
 			.group(votosLegendaGroup)
@@ -1040,7 +1040,7 @@ function loadEstado(){
 			
 
 			row9.width(widthL*0.5)
-			.height(heightL*0.45)
+			.height(heightL*0.40)
 			.margins({top: 0, right: 35, bottom: 35, left: 35})
 			.dimension(legendaDim)
 			.group(eleitosLegendaGroup)
