@@ -14,7 +14,6 @@ $(document).keydown(function(event){
 		next();
 });
 
-
 function changeFilterMap(){
 	var filtro = $("#filtro_mapa")[0].value;
 	var turno = $("#turno_mapa")[0].value;
@@ -52,7 +51,7 @@ function back(){
 	if(prox < 0)
 		prox = charts.length - 1;
 	var proxId = charts[prox].id;
-	window.location=window.location.origin+window.location.pathname+window.location.search+"#"+proxId;
+	window.location = window.location.origin+window.location.pathname+window.location.search+"#"+proxId;
 	dc.renderAll();
 	drawLabels();
 }
@@ -61,17 +60,17 @@ function next(){
 	var charts = $(".chart");
 	var prox = (vis+1) % charts.length;
 	var proxId = charts[prox].id;
-	window.location=window.location.origin+window.location.pathname+window.location.search+"#"+proxId;
+	window.location = window.location.origin+window.location.pathname+window.location.search+"#"+proxId;
 	dc.renderAll();
 	drawLabels();
 }
 
 function pathEstado(estado){
-	return pathData+estado+"/data.csv"
+	return pathData + estado + "/data.csv"
 }
 
 function closeLoad(){
-	$("#load")[0].style.display="none";
+	$("#load")[0].style.display = "none";
 }
 
 function selecionarEstado(){
@@ -79,13 +78,13 @@ function selecionarEstado(){
 	console.log(point);
 	var id = point.tokenValue('%mapCode');
 	var estado = id.split(".")[1];
-	if(estado=="DF")
+	if(estado == "DF")
 		return null;
-	window.location= window.location.origin + window.location.pathname+"estado.html?q="+estado;
+	window.location = window.location.origin + window.location.pathname+"estado.html?q="+estado;
 }
 function home(){
 	var path = window.location.pathname.split("/")
-	window.location= window.location.origin+"/"+path[path.length - 2];	
+	window.location = window.location.origin + "/" + path[path.length - 2];	
 }
 function orderAscending(lista){
 	lista.sort(function(a,b){
@@ -105,7 +104,6 @@ function topRanking(listaName,turno,arrayData){
 			lista = resultado[top1[0]];
 		else
 			resultado[top1[0]] = lista;
-		// console.log(lista);
 		lista.push([arrayData[estado].estado,top1[1]]);
 
 	}
@@ -120,9 +118,7 @@ function topRanking(listaName,turno,arrayData){
 }
 function drawMap(map,lista,maxElements){
 	var marks = [];
-	if(lista != null){
-		// console.log(lista);
-		// console.log("entrou");
+	if(lista != null)
 		colors = ['#FDA463',"#90D091","#B1AED3","#828282","#EE7E96","#D4CD7F","#049CFE"];
 		if(maxElements > colors.length)
 			maxElements = colors.length;
@@ -133,45 +129,45 @@ function drawMap(map,lista,maxElements){
 			if(cont >= maxElements)
 				break;
 			jQuery('<div/>',{
-				id:'item_legenda_'+(i),
+				id:'item_legenda_' + (i),
 				class:'legenda_item'
 			}).appendTo("#legenda");
 
 			jQuery('<div/>',{
-				id:'color_legenda_'+(i),
+				id:'color_legenda_' + (i),
 				class:'color_legend',
-				style:'background-color: '+colors[cont]
-			}).appendTo('#item_legenda_'+(i));
+				style:'background-color: '+ colors[cont]
+			}).appendTo('#item_legenda_' + (i));
 
 			jQuery('<div/>',{
-				id:'texto_legenda_'+(i),
+				id:'texto_legenda_' + (i),
 				class:'texto_legenda',
 				text:lista[i][0]
-			}).appendTo('#item_legenda_'+(i));
+			}).appendTo('#item_legenda_' + (i));
 			
 			for(var j in lista[i][2]){
 				
 			// console.log(lista[i][j]);
-				marks.push({'map':'BR.'+lista[i][2][j][0],'color':colors[cont]});
+				marks.push({'map':'BR.' + lista[i][2][j][0],'color':colors[cont]});
 			}
-			cont = cont +1;
+			cont = cont + 1;
 		}
 		jQuery('<div/>',{
-				id:'item_legenda_'+(maxElements),
+				id:'item_legenda_' + (maxElements),
 				class:'legenda_item'
 			}).appendTo("#legenda");
 
 			jQuery('<div/>',{
-				id:'color_legenda_'+(maxElements),
+				id:'color_legenda_' + (maxElements),
 				class:'color_legend',
 				style:'background-color: #049CFE'
-			}).appendTo('#item_legenda_'+(maxElements));
+			}).appendTo('#item_legenda_' + (maxElements));
 			
 			jQuery('<div/>',{
-				id:'texto_legenda_'+(maxElements),
+				id:'texto_legenda_' + (maxElements),
 				class:'texto_legenda',
 				text:'Outros'
-			}).appendTo('#item_legenda_'+(maxElements));
+			}).appendTo('#item_legenda_' + (maxElements));
 	}
 	// console.log(marks);
 	map.JSC({

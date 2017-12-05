@@ -78,7 +78,7 @@ h2 span {
 	display: block;
 	color: #f2f2f2;
 	text-align: center;
-	padding: 6px 6px;
+	padding: 5px;
 	text-decoration: none;
 	font-size: 18px;
 	font-weight: 800;
@@ -89,27 +89,27 @@ h2 span {
 	display: block;
 	color: #f2f2f2;
 	text-align: center;
-	padding: 6px 6px;
+	padding: 10px;
 	text-decoration: none;
 	font-size: 15px;
 }
 
 .navbar a:hover {
-	background-color: #606060;
-	color: white;
+	background-color: #d2d2d2;
+	color: black;
 	text-decoration: none;
 }
 
 #mapa{
-	width: 100%; 
-	height: 100%;
+	max-width: 100%; 
+	max-height: 50%;
 }
 
 .chart{
 	min-width: 80%;
 	min-height: 80%;
-	width: 80%;
-	height: 80%;
+	max-width: 80%;
+	max-height: 80%;
 	left: 0%;
 }
 
@@ -320,19 +320,18 @@ h2 span {
 
 .filtro {
 	display: none;
-	background-color: white;
-	moz-border-radius: 8px 8px 8px 8px;
-	-webkit-border-radius: 8px 8px 8px 8px;
-	moz-box-shadow:2px 2px 5px #000000;
-	-webkit-box-shadow:2px 2px 5px #000000;
+	moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border: 1px solid #606060;
 	width: auto;
 	height: auto;
 	position: absolute;
 	right: 0%;
 	top: 30%;
 	margin-right: 20px;
-	background: rgba(255, 255, 255, 0.5);
 	padding: 5px 30px 5px 5px;
+	background-color: white;
+	color: black;
 }
 
 #Q1 .filtro{
