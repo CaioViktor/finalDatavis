@@ -4,6 +4,13 @@ var pathGeral = pathData+"geral.json"
 var rankings = {'1':{},'2':{}};
 var drawLabels;
 
+
+var resetQ1;
+var resetQ2;
+var resetQ3;
+var resetQ4;
+
+
 $(document).keydown(function(event){
 	var key = event.which;
 	if(key>=37 && key <= 40)
@@ -168,7 +175,7 @@ function drawMap(map,lista,maxElements){
 				class:'texto_legenda',
 				text:'Outros'
 			}).appendTo('#item_legenda_' + (maxElements));
-	}
+	
 	// console.log(marks);
 	map.JSC({
 			type: 'map',
@@ -277,8 +284,9 @@ function loadGeral(){
 		var maxEleitos = (eleitosPartidosGroup.top(1)[0]).value;
 
 		// console.log(maxEleitos);
+		console.log(widthL);
 		bar1.width(widthL)
-			.height(heightL*0.40)
+			.height(heightL*0.38)
 			.brushOn(false)
 			.y(d3.scale.linear().domain([0,maxEleitos+ (maxEleitos*0.09)]))
 			.margins({top: 45, right: 80, bottom: 30, left: 40})
@@ -519,7 +527,7 @@ function loadGeral(){
 
 		//Condiguração gráficos
 		bubble.width(widthL)
-			.height(heightL*0.9)
+			.height(heightL*0.83)
 			.margins({top: 10, right: 50, bottom: 35, left: 40})
 			.dimension(bubbleDim)
 			.group(bubbleGroup)
@@ -643,7 +651,14 @@ function loadEstado(){
 			var bar2 = dc.barChart("#bar2");
 			bar2.ordering(function(d){return -d.value});
 			var bar3 = dc.barChart("#bar3");
-			
+			resetQ1 = function(){
+				bar1.filterAll();
+				bar2.filterAll();
+				bar3.filterAll();
+				select1.filterAll();
+				select9.filterAll();
+				dc.renderAll();
+			};
 
 			var factsQ1 = crossfilter(data);
 			
@@ -707,7 +722,7 @@ function loadEstado(){
 			//Condiguração gráficos
 			var widthL = $("#chartDiv1").width();
 			var heightL = $("#chartDiv1").height();
-			bar1.width(widthL*0.50)
+			bar1.width(widthL*0.40)
 				.height(heightL*0.45)
 				.margins({top: 20, right: 50, bottom: 25, left: 170})
 				.y(d3.scale.linear().domain([0,soma1+ (soma1*0.1)]))
@@ -731,7 +746,7 @@ function loadEstado(){
             	bar1.stack(sexoGroup, ''+resultados[i], sel_stack(resultados[i]));
             }
 
-            bar2.width(widthL*0.50)
+            bar2.width(widthL*0.6)
 				.height(heightL*0.45)
 				.margins({top: 20, right: 50, bottom: 35, left: 50})
                 .y(d3.scale.linear().domain([0,situacaoDim.group().top(1)[0].value *1.1]))
@@ -747,7 +762,7 @@ function loadEstado(){
              
              
              bar3.width(widthL)
-				.height(heightL*0.47)
+				.height(heightL*0.38)
 				.margins({top: 20, right: 50, bottom: 35, left: 40})
 				.brushOn(false)
 				.dimension(idadeDim)
@@ -784,6 +799,16 @@ function loadEstado(){
 			var select4 = dc.selectMenu("#select4");
 			var pie2 = dc.pieChart("#pie2");
 			var select5 = dc.selectMenu("#select5");
+			resetQ2 = function(){
+				pie2.filterAll();
+				scatter1.filterAll();
+				select2.filterAll();
+				select3.filterAll();
+				select4.filterAll();
+				select5.filterAll();
+				calcularCor();
+				dc.renderAll();
+			};
 
 			var factsQ2 = crossfilter(data);
 			// console.log(factsQ2);
@@ -826,7 +851,18 @@ function loadEstado(){
 			});
 
 			//Condiguração gráficos
-			
+			function calcularCor(){
+				minValue = geralGroup.top(geralGroup.size())[geralGroup.size()-1].value;
+				maxValue = geralGroup.top(1)[0].value;
+				scatter1.colors(
+					d3.scale.linear().domain([minValue,maxValue])
+				      // .interpolate(d3.interpolateHcl)
+				     		.range([color, color.darker(4)])
+				 // quantize
+				);
+				$("#legendaLinear b")[0].innerHTML = maxValue;
+				$("#legendaLinear b")[1].innerHTML = minValue;
+			}
 			
 			scatter1.width(widthL*0.6)
 				.height(heightL*0.85)
@@ -851,16 +887,7 @@ function loadEstado(){
 					    )
 				.group(geralGroup)
 				.on('preRedraw', function() {
-					minValue = geralGroup.top(geralGroup.size())[geralGroup.size()-1].value;
-					maxValue = geralGroup.top(1)[0].value;
-					scatter1.colors(
-						d3.scale.linear().domain([minValue,maxValue])
-					      // .interpolate(d3.interpolateHcl)
-					     		.range([color, color.darker(4)])
-					 // quantize
-					);
-					$("#legendaLinear b")[0].innerHTML = maxValue;
-					$("#legendaLinear b")[1].innerHTML = minValue;
+					calcularCor();
 				});
 				
 
@@ -903,7 +930,7 @@ function loadEstado(){
 				.slicesCap(5)
 				.innerRadius(0)
 				.dimension(racasSexoDim)
-				.externalLabels(50)
+				.externalLabels(30)
 				.externalRadiusPadding(50)
           		.drawPaths(true)
 				.group(racasSexoDim.group())
@@ -930,6 +957,14 @@ function loadEstado(){
 			var row8 = dc.rowChart("#row8");
 			var row9 = dc.rowChart("#row9");
 
+			resetQ3 = function(){
+				row6.filterAll();
+				row7.filterAll();
+				select6.filterAll();
+				row8.filterAll();
+				row9.filterAll();
+				dc.renderAll();
+			};
 
 			var factsQ3 = crossfilter(data);
 			//Código
@@ -1048,6 +1083,13 @@ function loadEstado(){
 			row4.ordering(function(d){return -(d.value / quantidade_candidatos[d.key])*100;})
 			var row5 = dc.rowChart("#row5");
 			var select10 = dc.selectMenu("#select10");
+
+			resetQ4 = function(){
+				row4.filterAll();
+				row5.filterAll();
+				select10.filterAll();
+				dc.renderAll();
+			};
 			//Código
 		
 

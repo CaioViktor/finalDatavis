@@ -19,7 +19,7 @@
 		<script src="static/js/main.js"></script>
 
 	</head>
-	<body onload="loadEstado();" style="font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 12px;">
+	<body onload="loadEstado();">
 
 		<div class="navbar" id="menu">
 			<a href="/" style="font-weight: 800; font-size: 18px;"><img src="static/images/back_arrow.png" width="20px" height="20px"> VOLTAR</a>
@@ -40,12 +40,13 @@
 			</div>
 
 			<div id="content">
-				<div id="chartDiv1" class="chart" style="margin-left: 10%;">
-				<h1 style="margin-top: 80px;
-							margin-bottom: 20px; 
-							font-family: 'Raleway', sans-serif; 
-							font-size: 4vh;
-							font-weight: 700;">RAZÃO ENTRE HOMENS E MULHERES NO CENÁRIO POLÍTICO</h1>
+				<div id="chartDiv1" class="chart" >
+				<h1 >RAZÃO ENTRE HOMENS E MULHERES NO CENÁRIO POLÍTICO</h1>
+					<span>
+	                    <a class="reset" href="javascript:resetQ1();" >
+	                    	Resetar
+	                    </a>
+                	</span>
 					<div id="bar1"></div>
 					<div id="bar2"></div>
 					<div id="bar3"></div>
@@ -57,14 +58,14 @@
 				</div>
 
 
-				<div id="chartDiv2" class="chart" style="margin-left: 10%;">
-				<p style="font-family: 'Slabo 50px', serif; color: #D3D3D3;">
-				_______________________________________________________________________________________________________________________<br><br></p>
-				<h1 style="margin-top: 50px;
-							margin-bottom: 20px; 
-							font-family: 'Raleway', sans-serif; 
-							font-size: 4vh;
-							font-weight: 700;">RELAÇÃO ENTRE GÊNERO, RAÇA, ESCOLARIDADE E IDADE</h1>
+				<div id="chartDiv2" class="chart" >
+				<hr/>
+				<h1 >RELAÇÃO ENTRE GÊNERO, RAÇA, ESCOLARIDADE E IDADE</h1>
+					<span>
+	                    <a class="reset" href="javascript:resetQ2();" >
+	                    	Resetar
+	                    </a>
+                	</span>
 					<div id="pie2"></div>
 					<div id="scatter1"></div>
 					<div id="f2" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/filter.png" title="Configurar filtros"></div>
@@ -77,14 +78,14 @@
 				</div>
 
 
-				<div id="chartDiv3" class="chart" style="margin-left: 10%;">
-				<p style="font-family: 'Slabo 50px', serif; color: #D3D3D3;">
-				_______________________________________________________________________________________________________________________<br><br></p>
-				<h1 style="margin-top: 50px;
-							margin-bottom: 20px; 
-							font-family: 'Raleway', sans-serif; 
-							font-size: 4vh;
-							font-weight: 700;">RELAÇÃO ENTRE POPULARIDADE E QUANTIDADE DE ELEITOS POR PARTIDO</h1>
+				<div id="chartDiv3" class="chart" >
+				<hr/>
+				<h1>RELAÇÃO ENTRE POPULARIDADE E QUANTIDADE DE ELEITOS POR PARTIDO</h1>
+					<span>
+	                    <a class="reset" href="javascript:resetQ3();" >
+	                    	Resetar
+	                    </a>
+                	</span>
 					<div id="row6"></div>
 					<div id="row7"></div>
 					<div id="row8"></div>
@@ -97,14 +98,14 @@
 				</div>
 
 
-				<div id="chartDiv4" class="chart" style="margin-left: 10%; margin-bottom: 9.45%">
-				<p style="font-family: 'Slabo 50px', serif; color: #D3D3D3;">
-				_______________________________________________________________________________________________________________________<br><br></p>
-				<h1 style="margin-top: 50px;
-							margin-bottom: 20px; 
-							font-family: 'Raleway', sans-serif; 
-							font-size: 4vh;
-							font-weight: 700;">CASSAÇÕES</h1>
+				<div id="chartDiv4" class="chart" >
+				<hr/>
+				<h1 >CASSAÇÕES</h1>
+					<span>
+	                    <a class="reset" href="javascript:resetQ4();" >
+	                    	Resetar
+	                    </a>
+                	</span>
 					<div id="row4"></div>
 					<div id="row5"></div>
 					<div id="f4" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/filter.png" title="Configurar filtros"></div>

@@ -20,7 +20,7 @@
 		<script src="static/js/main.js"></script>
 
 	</head>
-	<body onload="loadGeral();" style="font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 12px;">
+	<body onload="loadGeral();">
 
 
 		<div id="load"><img src="static/images/load.gif"></div>
@@ -41,16 +41,12 @@
 			</div>
 
 
-			<div id="Q1" class="chart" style="margin-left: 10%;">
-				<h1 style="margin-top: 86px;
-							margin-bottom: 20px; 
-							font-family: 'Raleway', sans-serif; 
-							font-size: 4vh;
-							font-weight: 700;">POPULARIDADE DOS PARTIDOS POR ESTADO</h1>
+			<div id="Q1" class="chart">
+				<h1>POPULARIDADE DOS PARTIDOS POR ESTADO</h1>
 				<div id="mapa"></div>
-				<div id="legenda" style="margin-top: 100px;"></div>
-				<div id="bar1Q1" style="margin-top: 160px; font-size: 10px;"></div>
-				<div id="f1" class="filtro_buttom" style="margin-top: 140px;" onclick="clickFilter(this);"><img src="static/images/filter.png" title="Filtrar"></div>
+				<div id="legenda" ></div>
+				<div id="bar1Q1" ></div>
+				<div id="f1" class="filtro_buttom"  onclick="clickFilter(this);"><img src="static/images/filter.png" title="Filtrar"></div>
 				<div id="df1" class = "filtro">
 					Turno:
 					<select id="turno_mapa" onchange="changeFilterMap();">
@@ -67,24 +63,16 @@
 			</div>
 
 
-			<div id="Q2" class="chart" style="margin-top: 150px; margin-left: 10%;">
-				<p style="font-family: 'Slabo 50px', serif; color: #D3D3D3;">
-				_______________________________________________________________________________________________________________________<br><br></p>
-				<h1 style="font-family: 'Raleway', sans-serif; 
-							font-size: 4vh;
-							font-weight: 700;
-							margin-top: 50px;">TAXA DE HOMENS E MULHERES POR ESTADO</h1>
+			<div id="Q2" class="chart">
+				<hr/>
+				<h1>TAXA DE HOMENS E MULHERES POR ESTADO</h1>
 				<div id="candidatos"></div>
 			</div>
 
 
-			<div id="Q3" class="chart" style="margin-top: 100px; margin-left: 10%;">
-				<p style="font-family: 'Slabo 50px', serif; color: #D3D3D3;">
-				_______________________________________________________________________________________________________________________<br><br></p>
-				<h1 style="font-family: 'Raleway', sans-serif; 
-							font-size: 4vh;
-							font-weight: 700;
-							margin-top: 50px;">TAXA DE ESCOLARIDADE DOS CANDIDATOS POR ESTADO</h1>
+			<div id="Q3" class="chart" >
+				<hr/>
+				<h1>TAXA DE ESCOLARIDADE DOS CANDIDATOS POR ESTADO</h1>
 				<div id="pieG1"></div>
 				<div id="f2" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/filter.png" title="Filtrar"></div>
 				<div id="df2" class="filtro">
@@ -93,13 +81,9 @@
 			</div>
 
 
-			<div id="Q4" class="chart" style="margin-top: 50px; margin-left: 10%;">
-				<p style="font-family: 'Slabo 50px', serif; color: #D3D3D3;">
-				_______________________________________________________________________________________________________________________<br><br></p>
-				<h1 style="font-family: 'Raleway', sans-serif; 
-							font-size: 4vh;
-							font-weight: 700;
-							margin-top: 50px;">TAXA DE ETNIA OU RAÇA DE CANDIDATOS POR ESTADO</h1>
+			<div id="Q4" class="chart">
+				<hr/>
+				<h1 >TAXA DE ETNIA OU RAÇA DE CANDIDATOS POR ESTADO</h1>
 				<div id="pieG2"></div>
 				<div id="f3" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/filter.png" title="Filtrar"></div>
 				<div id="df3" class="filtro" >
@@ -108,37 +92,25 @@
 			</div>
 
 
-			<div id="Q5" class="chart" style="margin-left: 10%;">
-				<p style="font-family: 'Slabo 50px', serif; color: #D3D3D3;">
-				_______________________________________________________________________________________________________________________<br><br></p>
-				<h1 style="font-family: 'Raleway', sans-serif; 
-							font-size: 4vh;
-							font-weight: 700;
-							margin-top: 50px;">IDADE MÉDIA DOS CANDIDATOS/ELEITOS POR ESTADO</h1>
+			<div id="Q5" class="chart" >
+				<hr/>
+				<h1 >IDADE MÉDIA DOS CANDIDATOS/ELEITOS POR ESTADO</h1>
 				<div id="row1"></div>
 				<div id="row2"></div>
 			</div>
 
 
-			<div id="Q6" class="chart" style="margin-top: -50px; margin-left: 10%;">
-				<p style="font-family: 'Slabo 50px', serif; color: #D3D3D3;">
-				_______________________________________________________________________________________________________________________<br><br></p>
-				<h1 style="font-family: 'Raleway', sans-serif; 
-							font-size: 4vh;
-							font-weight: 700;
-							margin-top: 50px;">CASSAÇÕES / IDADE MÉDIA ELEITO / QUANTIDADE DE CANDIDATOS</h1>
+			<div id="Q6" class="chart">
+				<hr/>
+				<h1 >CASSAÇÕES / IDADE MÉDIA ELEITO / QUANTIDADE DE CANDIDATOS</h1>
 				<div id="bubble"></div>
 				
 			</div>
 
 
-			<div id="Q7" class="chart" style="margin-top: -100px; margin-left: 10%; margin-bottom: 9.5%">
-				<p style="font-family: 'Slabo 50px', serif; color: #D3D3D3;">
-				_______________________________________________________________________________________________________________________<br><br></p>
-				<h1 style="font-family: 'Raleway', sans-serif; 
-							font-size: 4vh;
-							font-weight: 700;
-							margin-top: 50px;">TAXA DE CASSAÇÕES POR ESTADO</h1>
+			<div id="Q7" class="chart" >
+				<hr/>
+				<h1>TAXA DE CASSAÇÕES POR ESTADO</h1>
 				<div id="row3"><div>
 			</div>
 
