@@ -1,23 +1,17 @@
-.reset{
-	position:absolute;
-	bottom:0%;
-	left:0%;
-	z-index: 1000;
-	moz-border-radius: 8px 8px 8px 8px;
-	-webkit-border-radius: 8px 8px 8px 8px;
-	moz-box-shadow:2px 2px 5px #000000;
-	-webkit-box-shadow:2px 2px 5px #000000;
-	background-color: #fc4137;
-	color: white;
-	padding: 2px 2px 2px 2px;
-}
 @media print {
-	body {-webkit-print-color-adjust: exact;}
+	body {
+		-webkit-print-color-adjust: exact;
+	}
 }
-@media print{@page {size: landscape}}
+
+@media print{
+	@page {
+		size: landscape
+	}
+}
+
 body {
-    font-family: "helvetica";
-    
+    font-family: 'Raleway', sans-serif;
 }
 
 h4 span {
@@ -25,17 +19,26 @@ h4 span {
     font-weight:normal;
 }
   
+h1 {
+	font-family: 'Julius Sans One', sans-serif;
+    font-size: 5vh;
+}
+
 h2 {
+	font-family: 'Julius Sans One', sans-serif;
+    font-size: 5vh;
     float: right;
-  }
+}
   
 h2 span {
     font-size:14px;
     font-weight:normal;
 }
+
 .erro{
 	display: none;
 }
+
 #load{
 	display: none;
 	position:absolute;
@@ -51,54 +54,87 @@ h2 span {
     z-index: 9000;
     text-align: center;
     justify-content: center;
-    pointer-events:none
-
+    pointer-events: none
 }
+
 #load img{
 	position:absolute;
 	top:50%;
 	width: 36px;
 	height:36px;
 }
+
+.navbar {
+	overflow: hidden; 
+	background-color: #000000; 
+	position: fixed !important; 
+	top: 0; 
+	width: 100%; 
+	z-index: 99;
+}
+
+.navbar b {
+	float: left;
+	display: block;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 6px 6px;
+	text-decoration: none;
+	font-size: 18px;
+	font-weight: 800;
+}
+
+.navbar a {
+	float: left;
+	display: block;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 6px 6px;
+	text-decoration: none;
+	font-size: 15px;
+}
+
+.navbar a:hover {
+	background-color: #606060;
+	color: white;
+	text-decoration: none;
+}
+
 #mapa{
 	width: 100%; 
-	height: 100%; 
-	margin:auto;
+	height: 100%;
 }
+
 .chart{
-	min-width: 100%;
-	min-height:100%;
-	width: 100%;
-	height:100%;
-	position: absolute;
+	min-width: 80%;
+	min-height: 80%;
+	width: 80%;
+	height: 80%;
 	left: 0%;
 }
+
 #chartDiv1{
 	position:absolute;
 	top:0%;
 	background-color: #f4f4f4;
-
 }
+
 #chartDiv1 h1{
 	margin: 0px 0px 0px 0px;
 }
+
 #chartDiv2{
 	position:absolute;
 	top:100%;
-	/*background-color: #01496d;*/
 	background-color: white;	
 }
-/*#chartDiv2 svg{
-	background-color: white;	
-}*/
-/*#chartDiv2 h1{
-	color:white;
-}*/
+
 #chartDiv3{
 	position:absolute;
 	top:200%;
 	background-color: #f4f4f4;
 }
+
 #chartDiv3 h1{
 	margin: 0px 0px 0px 0px;
 }
@@ -108,32 +144,40 @@ h2 span {
 	top:300%;
 	background-color: #fff;
 }
+
 .color_legend{
 	float: left;
 	height: 30px;
 	width: 30px;
 }
+
 .texto_legenda{
 	float: left;
+	margin: 5px;
+	font-size: 15px;
 }
+
 .legenda_item{
 	height: 30px;
 	margin-top: 5px;
 }
+
 #legenda{
 	position: absolute;
-	top: 5%;
+	top: 15%;
 	margin-top: 5%;
-	right: 0%;
-
+	right: -2%;
 }
+
 #Q1{
 	position: absolute;
-	top: 0%;
 }
 
 #Q1 h1{
-	margin: 0px 0px 0px 0px;
+	margin-top: 50px;
+	margin-left: 0px;
+	margin-bottom: 0px;
+	margin-right: 0px;
 }
 
 #bar1Q1{
@@ -144,41 +188,37 @@ h2 span {
 	position: absolute;
 	top: 100%;
 	background-color: #f4f4f4;
-	
 }
+
 #Q3{
 	position: absolute;
 	top: 200%;
-	background-color: #fff;
-	
 }
 
 #Q4{
 	position: absolute;
 	top: 300%;
 	background-color: #f4f4f4;
-	
 }
+
 #Q5{
 	position: absolute;
 	top: 400%;
 	background-color: #fff;
-	
 }
+
 #Q6{
 	position: absolute;
 	top: 500%;
 	background-color: #f4f4f4;
-	
 }
+
 #Q7{
 	position: absolute;
 	top: 600%;
 	background-color: #fff;
-	/*color: white;*/
-	/*fill:white !important;*/
-	
 }
+
 #gradient{
 	background: -webkit-linear-gradient(bottom,#ffff00,#3d3d00);
 	/* For Opera 11.1 to 12.0 */
@@ -191,81 +231,94 @@ h2 span {
 	min-width: 20px;
 	width: 10%;
 	height: 30%;
-	
-
 }
+
 #legendaLinear{
 	position: absolute;
 	top: 0%;
 	margin-top: 5%;
 	right: 0%;
 }
+
 .buttom_control{
-	moz-border-radius: 15px 15px 15px 15px;
-	-webkit-border-radius: 15px 15px 15px 15px;
+	moz-border-radius: 30px;
+	-webkit-border-radius: 30px;
+	/**
 	moz-box-shadow:2px 2px 5px #000000;
 	-webkit-box-shadow:2px 2px 5px #000000;
-	background-color: #ba0136;
-	z-index: 2001;
-	height: 30px;
-	width: 30px;
+	**/
+	background-color: #000000;
+	z-index: 90;
+	height: 40px;
+	width: 40px;
 	float: left;
-	margin-right: 5px;
+	margin-right: 10px;
 }
-.controls{
-	position:fixed;
+
+.controls {
+	position: fixed;
 	bottom: 0%;
 	right: 0%;
 	margin-bottom: 20px;
 	opacity: 0.6;
     filter: alpha(opacity=60); /* For IE8 and earlier */
 }
-.controls:hover{
+
+.controls:hover {
 	opacity: 1;
     filter: alpha(opacity=100); /* For IE8 and earlier */	
 }
-.buttom_control img{
-	padding-top: 5px;
-	padding-left: 5px;
-	height: 24px;
-	width: 24px;
+
+.buttom_control img {
+	margin: 5px;
+	height: 25px;
+	width: 25px;
 }
-.buttom_control:hover{
+
+.buttom_control:hover {
 	cursor: pointer;
 }
 
 .filtro_buttom{
-	moz-border-radius: 15px 15px 15px 15px;
-	-webkit-border-radius: 15px 15px 15px 15px;
+	moz-border-radius: 30px 30px 30px 30px;
+	-webkit-border-radius: 30px 30px 30px 30px;
+	/**
 	moz-box-shadow:2px 2px 5px #000000;
 	-webkit-box-shadow:2px 2px 5px #000000;
-	background-color: #8506ce;
-	z-index: 1000;
-	height: 30px;
-	width: 30px;
+	**/
+	background-color: #000000;
+	z-index: 80;
+	height: 40px;
+	width: 40px;
 	position: absolute;
-	top: 0%;
+	top: 10%;
 	right: 0%;
 	text-align: center;
-	margin-top: 20px;
-	margin-right:20px;
+	margin-top: 60px;
+	margin-right: 20px;
+	opacity: 0.6;
+    filter: alpha(opacity=60); /* For IE8 and earlier */
 }
+
 #Q1 .filtro_buttom{
-	margin-top: 100px;
-	margin-right:100px;
+	margin-right: auto;
+	top: 10%;
+	right: 10%;
 }
 
 .filtro_buttom img{
-	padding-top: 5px;
-	height: 24px;
-	width: 24px;
-
+	margin: 8px;
+	height: 25px;
+	width: 25px;
 }
-.filtro_buttom:hover{
+
+.filtro_buttom:hover {
 	cursor: pointer;
+	opacity: 1;
+    filter: alpha(opacity=100); /* For IE8 and earlier */	
 }
 
-.filtro{
+.filtro {
 	display: none;
 	background-color: white;
 	moz-border-radius: 8px 8px 8px 8px;
@@ -273,17 +326,17 @@ h2 span {
 	moz-box-shadow:2px 2px 5px #000000;
 	-webkit-box-shadow:2px 2px 5px #000000;
 	width: auto;
-	min-height: 50%;
+	height: auto;
 	position: absolute;
 	right: 0%;
-	top: 20px;
+	top: 30%;
 	margin-right: 20px;
 	background: rgba(255, 255, 255, 0.5);
 	padding: 5px 30px 5px 5px;
-
 }
+
 #Q1 .filtro{
-	top: 100px;
+	top: 46%;
 	margin-right: 100px;
 }
 
@@ -295,6 +348,7 @@ g text{
     text-anchor: end !important;
     transform: rotate(-30deg);
 }
+
 /*
 #bar2 .x.axis text {
     text-anchor: end !important;

@@ -4,11 +4,6 @@ var pathGeral = pathData+"geral.json"
 var rankings = {'1':{},'2':{}};
 var drawLabels;
 
-var resetQ1;
-var resetQ2;
-var resetQ3;
-var resetQ4;
-
 $(document).keydown(function(event){
 	var key = event.which;
 	if(key>=37 && key <= 40)
@@ -128,7 +123,7 @@ function drawMap(map,lista,maxElements){
 	if(lista != null){
 		// console.log(lista);
 		// console.log("entrou");
-		colors = ['#fff500',"#e2e2dc","#e56604","#f71a02","#3cbf03","#91018a","#0fedb5","#1710ed"];
+		colors = ['#FDA463',"#90D091","#B1AED3","#828282","#EE7E96","#D4CD7F","#049CFE"];
 		if(maxElements > colors.length)
 			maxElements = colors.length;
 		if(maxElements > lista.length)
@@ -169,7 +164,7 @@ function drawMap(map,lista,maxElements){
 			jQuery('<div/>',{
 				id:'color_legenda_'+(maxElements),
 				class:'color_legend',
-				style:'background-color: #005dff'
+				style:'background-color: #049CFE'
 			}).appendTo('#item_legenda_'+(maxElements));
 			
 			jQuery('<div/>',{
@@ -183,14 +178,14 @@ function drawMap(map,lista,maxElements){
 			type: 'map',
 			annotations: [{
 			    label: {
-			      text: 'Clique em um estado para visão detalhada',
-			      styleFontSize: 14
+			      text: 'Clique em um estado para detalhes',
+			      styleFontSize: 10
 			    },
 			    position: '20,0'
 			}],
 			series: [{
 					map: 'BR',
-					points:marks
+					points: marks
 					// [
 						// {'map':'BR.CE','color':'#fff500'},
 					// 	{map:'BR.SP',color:'green'},
@@ -200,7 +195,7 @@ function drawMap(map,lista,maxElements){
 					,
 					defaultPoint: {
 					  eventsClick: selecionarEstado,
-					  tooltip: 'Clique para ver detalhado %province'
+					  tooltip: '%province'
 					},
 				}]
 			});
@@ -290,7 +285,7 @@ function loadGeral(){
 			.height(heightL*0.40)
 			.brushOn(false)
 			.y(d3.scale.linear().domain([0,maxEleitos+ (maxEleitos*0.09)]))
-			.margins({top: 45, right: 50, bottom: 30, left: 40})
+			.margins({top: 45, right: 80, bottom: 30, left: 40})
 			.dimension(eleitosPartidosDim)
 			.group(eleitosPartidosGroup)
 			.x(d3.scale.ordinal())
@@ -397,7 +392,7 @@ function loadGeral(){
 				// workaround for #703: not enough data is accessible through .label() to display percentages
 				.on('pretransition', function(chart) {
 				    chart.selectAll('text.pie-slice').text(function(d) {
-				        return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+				        return dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
 				    })
 				});
 
@@ -441,7 +436,7 @@ function loadGeral(){
 				// workaround for #703: not enough data is accessible through .label() to display percentages
 				.on('pretransition', function(chart) {
 				    chart.selectAll('text.pie-slice').text(function(d) {
-				        return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+				        return dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
 				    })
 				});
 
@@ -652,14 +647,7 @@ function loadEstado(){
 			var bar2 = dc.barChart("#bar2");
 			bar2.ordering(function(d){return -d.value});
 			var bar3 = dc.barChart("#bar3");
-			resetQ1 = function(){
-				bar1.filterAll();
-				bar2.filterAll();
-				bar3.filterAll();
-				select1.filterAll();
-				select9.filterAll();
-				dc.renderAll();
-			};
+			
 
 			var factsQ1 = crossfilter(data);
 			
@@ -800,16 +788,6 @@ function loadEstado(){
 			var select4 = dc.selectMenu("#select4");
 			var pie2 = dc.pieChart("#pie2");
 			var select5 = dc.selectMenu("#select5");
-			resetQ2 = function(){
-				pie2.filterAll();
-				scatter1.filterAll();
-				select2.filterAll();
-				select3.filterAll();
-				select4.filterAll();
-				select5.filterAll();
-				calcularCor();
-				dc.renderAll();
-			};
 
 			var factsQ2 = crossfilter(data);
 			// console.log(factsQ2);
@@ -853,18 +831,7 @@ function loadEstado(){
 
 			//Condiguração gráficos
 			
-			function calcularCor(){
-				minValue = geralGroup.top(geralGroup.size())[geralGroup.size()-1].value;
-				maxValue = geralGroup.top(1)[0].value;
-				scatter1.colors(
-					d3.scale.linear().domain([minValue,maxValue])
-				      // .interpolate(d3.interpolateHcl)
-				     		.range([color, color.darker(4)])
-				 // quantize
-				);
-				$("#legendaLinear b")[0].innerHTML = maxValue;
-				$("#legendaLinear b")[1].innerHTML = minValue;
-			}
+			
 			scatter1.width(widthL*0.6)
 				.height(heightL*0.85)
 				.margins({top: 20, right: 20, bottom: 120, left: 50})
@@ -888,7 +855,16 @@ function loadEstado(){
 					    )
 				.group(geralGroup)
 				.on('preRedraw', function() {
-					calcularCor();
+					minValue = geralGroup.top(geralGroup.size())[geralGroup.size()-1].value;
+					maxValue = geralGroup.top(1)[0].value;
+					scatter1.colors(
+						d3.scale.linear().domain([minValue,maxValue])
+					      // .interpolate(d3.interpolateHcl)
+					     		.range([color, color.darker(4)])
+					 // quantize
+					);
+					$("#legendaLinear b")[0].innerHTML = maxValue;
+					$("#legendaLinear b")[1].innerHTML = minValue;
 				});
 				
 
@@ -939,7 +915,7 @@ function loadEstado(){
 				// workaround for #703: not enough data is accessible through .label() to display percentages
 				.on('pretransition', function(chart) {
 				    chart.selectAll('text.pie-slice').text(function(d) {
-				        return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+				        return dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
 				    })
 				});
 
@@ -957,14 +933,7 @@ function loadEstado(){
 			var row7 = dc.rowChart("#row7");
 			var row8 = dc.rowChart("#row8");
 			var row9 = dc.rowChart("#row9");
-			resetQ3 = function(){
-				row6.filterAll();
-				row7.filterAll();
-				select6.filterAll();
-				row8.filterAll();
-				row9.filterAll();
-				dc.renderAll();
-			};
+
 
 			var factsQ3 = crossfilter(data);
 			//Código
@@ -1083,14 +1052,9 @@ function loadEstado(){
 			row4.ordering(function(d){return -(d.value / quantidade_candidatos[d.key])*100;})
 			var row5 = dc.rowChart("#row5");
 			var select10 = dc.selectMenu("#select10");
-			resetQ4 = function(){
-				row4.filterAll();
-				row5.filterAll();
-				select10.filterAll();
-				dc.renderAll();
-			};
-
 			//Código
+		
+
 
 			var partidoDim = factsQ4.dimension(function(d){
 				return d.sigla_partido;

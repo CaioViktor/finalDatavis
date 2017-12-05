@@ -8,6 +8,9 @@
 		<link rel="stylesheet" type="text/css" href="static/css/style.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 
+		<!-- referencia da fonte (Raleway) -->
+		<link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900|Slabo+27px" rel="stylesheet">
+
 		<script type="text/javascript" src="static/js/jQuery.js"></script>
 		<script src="static/js/d3.v3.min.js" charset="utf-8"></script>
 		<script src="static/js/crossfilter.js"></script>
@@ -15,88 +18,108 @@
 		<script src="static/js/colorbrewer.v1.min.js"></script>
 		<script src="static/js/main.js"></script>
 
-
-
 	</head>
-	<body onload="loadEstado();">
-		<div id="load"><img src="static/images/load.gif"></div>
-		<div id="erro_estado" class ="erro">
-			<h1>Erro</h1><br/>
-			<b>Estado não encontrado</b>
+	<body onload="loadEstado();" style="font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px;">
+
+		<div class="navbar">
+			<a href="/" style="font-weight: 800; font-size: 18px;"><img src="static/images/back_arrow.png" width="20px" height="20px"> VOLTAR</a>
+			<a href="#chartDiv1">Razão Entre Homens e Mulheres</a>
+			<a href="#chartDiv2">Gênero, Raça, Escolaridade e Idade</a>
+			<a href="#chartDiv3">Popularidade e Quantidade de Eleitos</a>
+			<a href="#chartDiv4">Cassações</a>
 		</div>
-		<div id="content" >
-			<div id="chartDiv1" class="chart">
-				<h1>Razão entre homens e mulheres no cenário político</h1>
-				<span>
-                    <a class="reset" href="javascript:resetQ1();" >
-                    	Resetar
-                    </a>
-                </span>
-				<div id="bar1"></div>
-				<div id="bar2"></div>
-				<div id="bar3"></div>
-				<div id="f1" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/funnel.png" title="Configurar filtros"></div>
-				<div id="df1" class = "filtro">
-					<div id="select1">Turno:</div>
-					<div id="select9">Cargo:</div>
+
+		<center>
+
+			<div id="load"><img src="static/images/load.gif"></div>
+
+
+			<div id="erro_estado" class ="erro">
+				<h1>Erro</h1><br/>
+				<b>Estado não encontrado</b>
+			</div>
+
+			<div id="content">
+				<div id="chartDiv1" class="chart" style="margin-left: 10%;">
+				<h1 style="margin-top: 80px;
+							margin-bottom: 20px; 
+							font-family: 'Raleway', sans-serif; 
+							font-size: 4vh;
+							font-weight: 700;">RAZÃO ENTRE HOMENS E MULHERES NO CENÁRIO POLÍTICO</h1>
+					<div id="bar1"></div>
+					<div id="bar2"></div>
+					<div id="bar3"></div>
+					<div id="f1" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/filter.png" title="Configurar filtros"></div>
+					<div id="df1" class = "filtro">
+						<div id="select1">Turno:</div>
+						<div id="select9">Cargo:</div>
+					</div>
+				</div>
+
+
+				<div id="chartDiv2" class="chart" style="margin-left: 10%;">
+				<p style="font-family: 'Slabo 50px', serif;">
+				_______________________________________________________________________________________________________________________<br><br></p>
+				<h1 style="margin-top: 50px;
+							margin-bottom: 20px; 
+							font-family: 'Raleway', sans-serif; 
+							font-size: 4vh;
+							font-weight: 700;">RELAÇÃO ENTRE GÊNERO, RAÇA, ESCOLARIDADE E IDADE</h1>
+					<div id="pie2"></div>
+					<div id="scatter1"></div>
+					<div id="f2" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/filter.png" title="Configurar filtros"></div>
+					<div id="df2" class = "filtro">
+						<div id="select5">Turno:</div>
+						<div id="select2">Partido:</div>
+						<div id="select3">Cargo:</div>
+						<div id="select4">eleito:</div>
+					</div>
+				</div>
+
+
+				<div id="chartDiv3" class="chart" style="margin-left: 10%;">
+				<p style="font-family: 'Slabo 50px', serif;">
+				_______________________________________________________________________________________________________________________<br><br></p>
+				<h1 style="margin-top: 50px;
+							margin-bottom: 20px; 
+							font-family: 'Raleway', sans-serif; 
+							font-size: 4vh;
+							font-weight: 700;">RELAÇÃO ENTRE POPULARIDADE E QUANTIDADE DE ELEITOS POR PARTIDO</h1>
+					<div id="row6"></div>
+					<div id="row7"></div>
+					<div id="row8"></div>
+					<div id="row9"></div>
+					
+					<div id="f3" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/filter.png" title="Configurar filtros"></div>
+					<div id="df3" class = "filtro">
+						<div id="select6">Cargo:</div>
+					</div>
+				</div>
+
+
+				<div id="chartDiv4" class="chart" style="margin-left: 10%; margin-bottom: 30%">
+				<p style="font-family: 'Slabo 50px', serif;">
+				_______________________________________________________________________________________________________________________<br><br></p>
+				<h1 style="margin-top: 50px;
+							margin-bottom: 20px; 
+							font-family: 'Raleway', sans-serif; 
+							font-size: 4vh;
+							font-weight: 700;">CASSAÇÕES</h1>
+					<div id="row4"></div>
+					<div id="row5"></div>
+					<div id="f4" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/filter.png" title="Configurar filtros"></div>
+					<div id="df4" class = "filtro">
+						<div id="select10">Cargo:</div>
+					</div>
 				</div>
 			</div>
-			<div id="chartDiv2" class="chart">
-				<h1>Relação entre Sexo, Raça, Escolaridade e Idade</h1>
-				<span>
-                    <a class="reset" href="javascript:resetQ2();" >
-                    	Resetar
-                    </a>
-                </span>
-				<div id="pie2"></div>
-				<div id="scatter1"></div>
-				<div id="f2" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/funnel.png" title="Configurar filtros"></div>
-				<div id="df2" class = "filtro">
-					<div id="select5">Turno:</div>
-					<div id="select2">Partido:</div>
-					<div id="select3">Cargo:</div>
-					<div id="select4">eleito:</div>
-				</div>
+
+			<div class="controls">
+					<div id="back" class="buttom_control" title="Gŕafico anterior"><img src="static/images/up_arrow.png" onclick="back();"></div>
+					<div id="next" class="buttom_control" title="Próximo gráfico"><img src="static/images/down_arrow.png" onclick="next();"></div>
 			</div>
-			<div id="chartDiv3" class="chart">
-				<h1>Relação entre a popularidade e o número de de eleito por partido</h1>
-				<span>
-                    <a class="reset" href="javascript:resetQ3();" >
-                    	Resetar
-                    </a>
-                </span>
-				<div id="row6"></div>
-				<div id="row7"></div>
-				<div id="row8"></div>
-				<div id="row9"></div>
-				
-				<div id="f3" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/funnel.png" title="Configurar filtros"></div>
-				<div id="df3" class = "filtro">
-					<div id="select6">Cargo:</div>
-				</div>
-			</div>
-			<div id="chartDiv4" class="chart">
-				<h1>Cassações</h1>
-				<span>
-                    <a class="reset" href="javascript:resetQ4();" >
-                    	Resetar
-                    </a>
-                </span>
-				<div id="row4"></div>
-				<div id="row5"></div>
-				<div id="f4" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/funnel.png" title="Configurar filtros"></div>
-				<div id="df4" class = "filtro">
-					<div id="select10">Cargo:</div>
-				</div>
-			</div>
-		</div>
-		<div class="controls">
-			<div id="back" class="buttom_control" title="Gŕafico anterior"><img src="static/images/back.png" onclick="back();"></div>
-			<div id="home" class="buttom_control" title="Voltar para visão geral"><img src="static/images/home.png" onclick="home();"></div><!-- 
-			<div id="menu" class="buttom_control" title="Lista de gráfico"><img src="static/images/menu.png"></div> -->
-			<div id="print" class="buttom_control" onclick="window.print();" title="Imprimir página"><img src="static/images/print.png"></div>
-			<div id="next" class="buttom_control" title="Próximo gráfico"><img src="static/images/next.png" onclick="next();"></div>
-		</div>
+
+		<center>
 		
 	</body>
 </html>

@@ -9,6 +9,9 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 
 		<script type="text/javascript" src="static/js/jQuery.js"></script>
+
+		<!-- referencia da fonte (Raleway) -->
+		<link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900|Slabo+27px" rel="stylesheet">
 		
 		<script type="text/javascript" src="static/js/JSC15/jscharting.js"></script>
 		<script src="static/js/d3.v3.min.js" charset="utf-8"></script>
@@ -17,68 +20,133 @@
 		<script src="static/js/main.js"></script>
 
 	</head>
-	<body onload="loadGeral();">
+	<body onload="loadGeral();" style="font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px;">
+
+
 		<div id="load"><img src="static/images/load.gif"></div>
-		<div id="Q1" class="chart">
-			<h1>Popularidade de partidos por estado</h1>
-			<div id="mapa"></div>
-			<div id="legenda"></div>
-			<div id="bar1Q1"></div>
-			<div id="f1" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/funnel.png" title="Configurar filtros"></div>
-			<div id="df1" class = "filtro">
-				Turno:
-				<select id="turno_mapa" onchange="changeFilterMap();">
-					<option value="1" selected="true">1º Turno</option>
-					<option value="2">2º Turno</option>
-				</select>
-				Filtro:
-				<select id="filtro_mapa" onchange="changeFilterMap();">
-					<option value="candidatos" selected="true">Quantidade de candidatos</option>
-					<option value="votos_por_partido">Votos por partido</option>
-					<option value="eleitos_por_partido">Eleitos por partido</option>
-				</select>
+
+
+		<center>			
+
+			<!-- Menu -->
+			<div class="navbar">
+				<b>PARTIDOS POLÍTICOS BRASILEIROS  <img src="static/images/flag.png" widtg="20px" height="20px"></b>
+  				<a href="#Q1">Popularidade</a>
+  				<a href="#Q2">Gênero</a>
+  				<a href="#Q3">Escolaridade</a>
+  				<a href="#Q4">Etnia ou Raça</a>
+  				<a href="#Q5">Idade Média</a>
+  				<a href="#Q6">Cassações por Idade</a>
+  				<a href="#Q7">Cassações</a>
 			</div>
-		</div>
-		<div id="Q2" class="chart">
-			<h1>Taxa de homens e mulheres por estado</h1>
-			<div id="candidatos"></div>
-		</div>
-		<div id="Q3" class="chart">
-			<h1>Taxa de escolaridade dos candidatos por estado</h1>
-			<div id="pieG1"></div>
-			<div id="f2" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/funnel.png" title="Configurar filtros"></div>
-			<div id="df2" class="filtro" >
+
+
+			<div id="Q1" class="chart" style="margin-left: 10%;">
+				<h1 style="margin-top: 80px;
+							margin-bottom: 20px; 
+							font-family: 'Raleway', sans-serif; 
+							font-size: 4vh;
+							font-weight: 700;">POPULARIDADE DOS PARTIDOS POR ESTADO</h1>
+				<div id="mapa"></div>
+				<div id="legenda" style="margin-top: 100px;"></div>
+				<div id="bar1Q1" style="margin-top: 160px;"></div>
+				<div id="f1" class="filtro_buttom" style="margin-top: 140px;" onclick="clickFilter(this);"><img src="static/images/filter.png" title="Configurar filtros"></div>
+				<div id="df1" class = "filtro">
+					Turno:
+					<select id="turno_mapa" onchange="changeFilterMap();">
+						<option value="1" selected="true">1º Turno</option>
+						<option value="2">2º Turno</option>
+					</select>
+					Filtro:
+					<select id="filtro_mapa" onchange="changeFilterMap();">
+						<option value="candidatos" selected="true">Quantidade de candidatos</option>
+						<option value="votos_por_partido">Votos por partido</option>
+						<option value="eleitos_por_partido">Eleitos por partido</option>
+					</select>
+				</div>
+			</div>
+
+
+			<div id="Q2" class="chart" style="margin-top: 150px; margin-left: 10%;">
+				<p style="font-family: 'Slabo 50px', serif;">
+				_______________________________________________________________________________________________________________________<br><br></p>
+				<h1 style="font-family: 'Raleway', sans-serif; 
+							font-size: 4vh;
+							font-weight: 700;
+							margin-top: 50px;">TAXA DE HOMENS E MULHERES POR ESTADO</h1>
+				<div id="candidatos"></div>
+			</div>
+
+
+			<div id="Q3" class="chart" style="margin-top: 100px; margin-left: 10%;">
+				<p style="font-family: 'Slabo 50px', serif;">
+				_______________________________________________________________________________________________________________________<br><br></p>
+				<h1 style="font-family: 'Raleway', sans-serif; 
+							font-size: 4vh;
+							font-weight: 700;
+							margin-top: 50px;">TAXA DE ESCOLARIDADE DOS CANDIDATOS POR ESTADO</h1>
+				<div id="pieG1"></div>
+				<div id="f2" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/filter.png" title="Configurar filtros"></div>
+				<div id="df2" class="filtro">
+					<div id="selectG1">Estado:</div>
+				</div>
+			</div>
+
+
+			<div id="Q4" class="chart" style="margin-top: 50px; margin-left: 10%;">
+				<p style="font-family: 'Slabo 50px', serif;">
+				_______________________________________________________________________________________________________________________<br><br></p>
+				<h1 style="font-family: 'Raleway', sans-serif; 
+							font-size: 4vh;
+							font-weight: 700;
+							margin-top: 50px;">TAXA DE ETNIA OU RAÇA DE CANDIDATOS POR ESTADO</h1>
+				<div id="pieG2"></div>
+				<div id="f3" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/filter.png" title="Configurar filtros"></div>
+				<div id="df3" class="filtro" >
+					<div id="selectG2">Estado:</div>
+				</div>
+			</div>
+
+
+			<div id="Q5" class="chart" style="margin-left: 10%;">
+				<p style="font-family: 'Slabo 50px', serif;">
+				_______________________________________________________________________________________________________________________<br><br></p>
+				<h1 style="font-family: 'Raleway', sans-serif; 
+							font-size: 4vh;
+							font-weight: 700;
+							margin-top: 50px;">IDADE MÉDIA DOS CANDIDATOS/ELEITOS POR ESTADO</h1>
+				<div id="row1"></div>
+				<div id="row2"></div>
+			</div>
+
+
+			<div id="Q6" class="chart" style="margin-top: -50px; margin-left: 10%;">
+				<p style="font-family: 'Slabo 50px', serif;">
+				_______________________________________________________________________________________________________________________<br><br></p>
+				<h1 style="font-family: 'Raleway', sans-serif; 
+							font-size: 4vh;
+							font-weight: 700;
+							margin-top: 50px;">CASSAÇÕES / IDADE MÉDIA ELEITO / QUANTIDADE DE CANDIDATOS</h1>
+				<div id="bubble"></div>
 				
-				<div id="selectG1">Estado:</div>
 			</div>
-		</div>
-		<div id="Q4" class="chart">
-			<h1>Taxa de etnia ou raça de canditatos por estado</h1>
-			<div id="pieG2"></div>
-			<div id="f3" class="filtro_buttom" onclick="clickFilter(this);"><img src="static/images/funnel.png" title="Configurar filtros"></div>
-			<div id="df3" class="filtro" >
-				<div id="selectG2">Estado:</div>
+
+
+			<div id="Q7" class="chart" style="margin-top: -100px; margin-left: 10%; margin-bottom: 20%">
+				<p style="font-family: 'Slabo 50px', serif;">
+				_______________________________________________________________________________________________________________________<br><br></p>
+				<h1 style="font-family: 'Raleway', sans-serif; 
+							font-size: 4vh;
+							font-weight: 700;
+							margin-top: 50px;">TAXA DE CASSAÇÕES POR ESTADO</h1>
+				<div id="row3"><div>
 			</div>
-		</div>
-		<div id="Q5" class="chart">
-			<h1>Idade média dos candidatos/Eleitos por estado</h1>
-			<div id="row1"></div>
-			<div id="row2"></div>
-		</div>
-		<div id="Q6" class="chart">
-			<h1>Cassações / Idade média eleito/ Quantidade de candidatos</h1>
-			<div id="bubble"></div>
-			
-		</div>
-		<div id="Q7" class="chart">
-			<h1>Percentual de cassações por estado</h1>
-			<div id="row3"><div>
-		</div>
-		<div class="controls">
-			<div id="back" class="buttom_control" title="Gŕafico anterior"><img src="static/images/back.png" onclick="back();"></div><!-- 
-			<div id="menu" class="buttom_control" title="Lista de gráfico"><img src="static/images/menu.png"></div> -->
-			<div id="print" class="buttom_control" onclick="window.print();" title="Imprimir página"><img src="static/images/print.png"></div>
-			<div id="next" class="buttom_control" title="Próximo gráfico"><img src="static/images/next.png" onclick="next();"></div>
-		</div>
+
+
+			<div class="controls">
+				<div id="back" class="buttom_control" title="Gŕafico anterior"><img src="static/images/up_arrow.png" onclick="back();"></div>
+				<div id="next" class="buttom_control" title="Próximo gráfico"><img src="static/images/down_arrow.png" onclick="next();"></div>
+			</div>
+		</center>
 	</body>
 </html>
