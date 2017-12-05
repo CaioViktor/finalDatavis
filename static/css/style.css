@@ -31,8 +31,8 @@ h2 {
 }
   
 h2 span {
-    font-size:14px;
-    font-weight:normal;
+    font-size: 14px;
+    font-weight: normal;
 }
 
 .erro{
@@ -41,16 +41,16 @@ h2 span {
 
 #load{
 	display: none;
-	position:absolute;
-	top:0px;
-	left:0px;
-	min-width:100%;
-	min-height:100%;
-	filter:alpha(opacity=80);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	min-width: 100%;
+	min-height: 100%;
+	filter: alpha(opacity=80);
 	background-color: #000000;
     opacity: 0.8;
-    -moz-opacity:0.8;
-    -webkit-opacity:0.8;
+    -moz-opacity: 0.8;
+    -webkit-opacity: 0.8;
     z-index: 9000;
     text-align: center;
     justify-content: center;
@@ -58,10 +58,10 @@ h2 span {
 }
 
 #load img{
-	position:absolute;
-	top:50%;
+	position: absolute;
+	top: 50%;
 	width: 36px;
-	height:36px;
+	height: 36px;
 }
 
 .navbar {
@@ -95,8 +95,8 @@ h2 span {
 }
 
 .navbar a:hover {
-	background-color: #d2d2d2;
-	color: black;
+	background-color: #606060;
+	color: white;
 	text-decoration: none;
 }
 
@@ -114,9 +114,8 @@ h2 span {
 }
 
 #chartDiv1{
-	position:absolute;
-	top:0%;
-	background-color: #f4f4f4;
+	position: absolute;
+	top: 0%;
 }
 
 #chartDiv1 h1{
@@ -124,15 +123,13 @@ h2 span {
 }
 
 #chartDiv2{
-	position:absolute;
-	top:100%;
-	background-color: white;	
+	position: absolute;
+	top: 100%;
 }
 
 #chartDiv3{
-	position:absolute;
-	top:200%;
-	background-color: #f4f4f4;
+	position: absolute;
+	top: 200%;
 }
 
 #chartDiv3 h1{
@@ -140,9 +137,8 @@ h2 span {
 }
 
 #chartDiv4{
-	position:absolute;
-	top:300%;
-	background-color: #fff;
+	position: absolute;
+	top: 300%;
 }
 
 .color_legend{
@@ -187,7 +183,6 @@ h2 span {
 #Q2{
 	position: absolute;
 	top: 100%;
-	background-color: #f4f4f4;
 }
 
 #Q3{
@@ -198,25 +193,21 @@ h2 span {
 #Q4{
 	position: absolute;
 	top: 300%;
-	background-color: #f4f4f4;
 }
 
 #Q5{
 	position: absolute;
 	top: 400%;
-	background-color: #fff;
 }
 
 #Q6{
 	position: absolute;
 	top: 500%;
-	background-color: #f4f4f4;
 }
 
 #Q7{
 	position: absolute;
 	top: 600%;
-	background-color: #fff;
 }
 
 #gradient{
@@ -340,7 +331,7 @@ h2 span {
 }
 
 g text{
-	fill:black !important;
+	fill: black !important;
 }
 
 #scatter1 .x.axis text {

@@ -903,7 +903,7 @@ function loadEstado(){
 				.slicesCap(5)
 				.innerRadius(0)
 				.dimension(racasSexoDim)
-				.externalLabels(0)
+				.externalLabels(50)
 				.externalRadiusPadding(50)
           		.drawPaths(true)
 				.group(racasSexoDim.group())
